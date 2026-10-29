@@ -1,0 +1,161 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>App do Ivo</title>
+<meta name="description" content="Apps by Ivo Lopes. Each app is an atom in one molecule.">
+<meta property="og:title" content="App do Ivo">
+<meta property="og:description" content="Apps by Ivo Lopes. Each app is an atom in one molecule.">
+<meta property="og:url" content="https://appdoivo.com">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://appdoivo.com/og-image.png?v=1">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="canonical" href="https://appdoivo.com">
+<link rel="icon" href="favicon.ico" sizes="32x32">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="theme-color" content="#f3efe6">
+<meta name="color-scheme" content="only light">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  /* A ball-and-stick model on lab paper. Atom colours follow the chemists'
+     CPK convention: carbon dark grey at the centre, oxygen red, nitrogen blue. */
+  :root {
+    --paper: #f3efe6; --grid: #e4ddcf; --ink: #22262b; --muted: #5d636b;
+    --carbon: #2f3439; --oxygen: #d2453a; --nitrogen: #3a62c9; --bond: #9aa0a6;
+    --sans: "Space Grotesk", system-ui, sans-serif; --mono: "IBM Plex Mono", ui-monospace, monospace;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--paper); color: var(--ink); font-family: var(--sans);
+    background-image: linear-gradient(var(--grid) 1px, transparent 1px), linear-gradient(90deg, var(--grid) 1px, transparent 1px);
+    background-size: 28px 28px; background-position: center;
+    display: grid; grid-template-rows: auto 1fr auto; min-height: 100svh;
+    padding: max(16px, env(safe-area-inset-top)) max(16px, env(safe-area-inset-right)) max(16px, env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left));
+  }
+  header { display: flex; justify-content: space-between; align-items: center; gap: 16px; }
+  .formula { font-family: var(--mono); font-size: 13px; letter-spacing: .06em; color: var(--muted); }
+  .lang {
+    font: 500 14px var(--mono); letter-spacing: .08em; color: var(--ink); background: var(--paper);
+    border: 1.5px solid var(--ink); border-radius: 22px; min-width: 56px; min-height: 44px; padding: 0 14px; cursor: pointer;
+  }
+  .lang:hover { background: var(--ink); color: var(--paper); }
+  .lang:focus-visible, .atom:focus-visible { outline: 3px solid var(--nitrogen); outline-offset: 4px; }
+
+  /* The molecule: one square stage; atoms and bonds placed in % of it */
+  main { display: grid; place-items: center; padding-block: 24px; }
+  .molecule { position: relative; width: min(760px, 100%, 78svh); aspect-ratio: 1; }
+  @media (max-aspect-ratio: 4/5) { .molecule { width: min(100%, 64svh); aspect-ratio: 3 / 4; } }
+  .bonds { position: absolute; inset: 0; width: 100%; height: 100%; overflow: visible; }
+  .bonds line { stroke: var(--bond); stroke-width: 7px; stroke-linecap: round; vector-effect: non-scaling-stroke; }
+  .bonds .soon { stroke-dasharray: 2px 14px; }
+  .atom {
+    position: absolute; left: var(--x); top: var(--y); translate: -50% -50%;
+    display: grid; justify-items: center; gap: 10px; text-decoration: none; color: inherit; border-radius: 50%;
+  }
+  .ball {
+    width: var(--d); aspect-ratio: 1; border-radius: 50%; display: grid; place-items: center;
+    color: #fff; font: 700 clamp(18px, 3.4vw, 26px) var(--sans); letter-spacing: .02em;
+    background: radial-gradient(circle at 34% 30%, color-mix(in srgb, var(--c) 55%, #fff) 0 8%, var(--c) 46%, color-mix(in srgb, var(--c) 70%, #000) 100%);
+    box-shadow: 0 10px 22px -10px color-mix(in srgb, var(--c) 70%, #000);
+    transition: transform .25s ease;
+  }
+  a.atom:hover .ball { transform: scale(1.06); }
+  .label { display: grid; justify-items: center; gap: 2px; text-align: center; width: max-content; max-width: min(240px, 46vw); text-wrap: balance; }
+  .name { font-weight: 700; font-size: 18px; }
+  .what { font-family: var(--mono); font-size: 12.5px; color: var(--muted); }
+  .go { font-family: var(--mono); font-size: 12.5px; color: var(--c); font-weight: 500; }
+  .core   { --x: 50%; --y: 46%; --d: clamp(96px, 22%, 132px); --c: var(--carbon); }
+  .festa  { --x: 22%; --y: 22%; --d: clamp(72px, 16%, 100px); --c: var(--oxygen); }
+  .astro  { --x: 78%; --y: 70%; --d: clamp(72px, 16%, 100px); --c: var(--nitrogen); }
+  .astro .ball { --c: #8ea4e0; }
+  .festa .label, .astro .label, .core .label { position: absolute; top: 100%; margin-top: 10px; }
+
+  /* Festa's name sits above its atom, so the bond never crosses a label */
+  .festa .label { top: auto; bottom: 100%; margin: 0 0 10px; }
+  @media (max-aspect-ratio: 4/5) {
+    .core  { --x: 30%; --y: 49%; --d: clamp(84px, 26%, 120px); }
+    .festa { --x: 68%; --y: 18%; --d: clamp(64px, 19%, 92px); }
+    .astro { --x: 66%; --y: 80%; --d: clamp(64px, 19%, 92px); }
+    .core .label { top: 50%; left: 100%; translate: 0 -50%; margin: 0 0 0 14px; justify-items: start; text-align: left; max-width: 44vw; }
+  }
+  footer { text-align: center; font-family: var(--mono); font-size: 13px; color: var(--muted); }
+  footer a { color: var(--ink); text-underline-offset: 3px; display: inline-flex; align-items: center; min-height: 44px; }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .molecule { animation: drift 7s ease-in-out infinite alternate; }
+    @keyframes drift { to { translate: 0 -6px; rotate: .6deg; } }
+  }
+</style>
+</head>
+<body>
+<header>
+  <span class="formula">appdoivo.com</span>
+  <button class="lang" id="lang" type="button">PT</button>
+</header>
+
+<main>
+  <div class="molecule" id="molecule">
+    <svg class="bonds" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
+      <line data-from="core" data-to="festa"/>
+      <line class="soon" data-from="core" data-to="astro"/>
+    </svg>
+    <h1 class="atom core">
+      <span class="ball" aria-hidden="true">Ai</span>
+      <span class="label"><span class="name">App do Ivo</span><span class="what" data-t="core"></span></span>
+    </h1>
+    <a class="atom festa" id="festa" href="https://festa-demo.appdoivo.com">
+      <span class="ball" aria-hidden="true">Fe</span>
+      <span class="label"><span class="name">Festa</span><span class="what" data-t="festa"></span><span class="go" data-t="festaGo"></span></span>
+    </a>
+    <div class="atom astro" id="astro">
+      <span class="ball" aria-hidden="true">As</span>
+      <span class="label"><span class="name">Astro</span><span class="what" data-t="astro"></span><span class="go" data-t="soon"></span></span>
+    </div>
+  </div>
+</main>
+
+<footer><a href="mailto:mail@ivolopes.com">mail@ivolopes.com</a></footer>
+
+<script>
+  // Words in both languages. ?lang=, then the visitor's last choice, then the browser.
+  const T = {
+    en: { core: "Apps by Ivo Lopes", festa: "Birthday Party App", festaGo: "Try the Demo →", astro: "Astrology App", soon: "Soon", other: "PT", otherLabel: "Ver em português", desc: "Apps by Ivo Lopes. Each app is an atom in one molecule." },
+    pt: { core: "Apps de Ivo Lopes", festa: "App de festa de anos", festaGo: "Experimentar a demo →", astro: "App de astrologia", soon: "Em breve", other: "EN", otherLabel: "View in English", desc: "Apps de Ivo Lopes. Cada app é um átomo da mesma molécula." },
+  };
+  let saved = null; try { saved = localStorage.getItem("lang"); } catch (_) {}
+  let lang = new URLSearchParams(location.search).get("lang") || saved || ((navigator.language || "").toLowerCase().startsWith("pt") ? "pt" : "en");
+  if (!T[lang]) lang = "en";
+  const fill = () => {
+    const t = T[lang];
+    document.documentElement.lang = lang;
+    document.querySelectorAll("[data-t]").forEach((el) => (el.textContent = t[el.dataset.t]));
+    const b = document.getElementById("lang"); b.textContent = t.other; b.setAttribute("aria-label", `${t.other}: ${t.otherLabel}`);
+    document.querySelector('meta[name="description"]').content = t.desc;
+  };
+  fill();
+  // Bonds run from ball centre to ball centre, wherever the layout puts the atoms
+  const bonds = () => {
+    const box = document.getElementById("molecule").getBoundingClientRect();
+    const at = (cls) => { const r = document.querySelector(`.${cls} .ball`).getBoundingClientRect();
+      return [((r.left + r.width / 2 - box.left) / box.width) * 100, ((r.top + r.height / 2 - box.top) / box.height) * 100]; };
+    document.querySelectorAll(".bonds line").forEach((l) => {
+      const [x1, y1] = at(l.dataset.from), [x2, y2] = at(l.dataset.to);
+      l.setAttribute("x1", x1); l.setAttribute("y1", y1); l.setAttribute("x2", x2); l.setAttribute("y2", y2);
+    });
+  };
+  bonds(); addEventListener("resize", bonds); document.fonts && document.fonts.ready.then(bonds);
+  document.getElementById("lang").addEventListener("click", () => {
+    lang = lang === "pt" ? "en" : "pt";
+    try { localStorage.setItem("lang", lang); } catch (_) {}
+    fill();
+  });
+</script>
+</body>
+</html>
