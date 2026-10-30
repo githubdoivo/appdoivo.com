@@ -9,7 +9,7 @@
 <meta property="og:description" content="Small apps by Ivo Lopes, each one an object on the shelf.">
 <meta property="og:url" content="https://appdoivo.com">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://appdoivo.com/og-image.png?v=5">
+<meta property="og:image" content="https://appdoivo.com/og-image.png?v=6">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -20,8 +20,8 @@
 <meta name="theme-color" content="#3a2414">
 <meta name="color-scheme" content="light dark">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="preload" as="image" href="img/scene/moody-desk.webp?v=1" media="(min-width: 721px)">
-<link rel="preload" as="image" href="img/scene/moody-phone.webp?v=1" media="(max-width: 720px)">
+<link rel="preload" as="image" href="img/scene/bare-desk.webp?v=1" media="(min-width: 721px)">
+<link rel="preload" as="image" href="img/scene/bare-phone.webp?v=1" media="(max-width: 720px)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet">
@@ -64,24 +64,26 @@
 
   /* Each app: a link over its object and stand, and its words on the label */
   .app { position: absolute; z-index: 2; display: block; border-radius: 12px; text-decoration: none; color: var(--ink); }
-  a.app:hover .label b { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .15em; }
   /* Touching or pointing at an object lights it softly, like a lamp turned toward it
      (instead of the browser's grey tap box, which showed the link's square edges) */
   a.app { -webkit-tap-highlight-color: transparent; outline: none; }
   /* The light: a small warm glow, like a firefly, appears on the object and breathes */
-  a.app::before { content: ""; position: absolute; left: 50%; top: 28%; width: 32%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; pointer-events: none;
+  a.app::before { content: ""; position: absolute; left: 50%; top: 40%; width: 34%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; pointer-events: none;
     background: radial-gradient(circle, #fff6dc 0 9%, rgba(255, 214, 140, .95) 16%, rgba(255, 180, 90, .45) 38%, rgba(255, 160, 70, .12) 62%, transparent 72%);
     opacity: 0; scale: .4; transition: opacity .3s ease, scale .45s cubic-bezier(.2, 1.4, .4, 1); }
   a.app:hover::before, a.app:focus-visible::before { opacity: .85; scale: 1; animation: breathe 2.4s ease-in-out .45s infinite; }
   a.app:active::before { opacity: 1; scale: 1.25; transition-duration: .12s; }
   @keyframes breathe { 50% { opacity: .55; scale: .82; } }
   @media (prefers-reduced-motion: reduce) { a.app::before { transition: none; animation: none !important; } }
-  .label { position: absolute; left: 0; right: 0; bottom: 0; height: var(--lh); display: grid; align-content: center; justify-items: center; text-align: center;
-    padding: 0 9%; filter: brightness(calc(.55 + var(--dim) * .45)); }
-  .label b { font: 700 var(--name)/1.05 "Cormorant Garamond", Georgia, serif; color: var(--ink); }
-  .label span { font-size: var(--small); line-height: 1.15; color: var(--sub); }
-  .scene.desk .app { --name: 2.1cqw; --small: 1.1cqw; }
-  .scene.phone .app { --name: 3.9cqw; --small: 0; }
+  /* No plaques: an app's name appears just under its object while the object is lit
+     (hovered, focused or tapped). Screen readers always get it. */
+  .label { position: absolute; left: -20%; right: -20%; top: 100%; display: grid; justify-items: center; text-align: center; gap: 2px; padding-top: 6px; pointer-events: none;
+    opacity: 0; translate: 0 -4px; transition: opacity .35s ease, translate .35s ease; }
+  a.app:hover .label, a.app:focus-visible .label, a.app:active .label { opacity: 1; translate: 0 0; }
+  .label b { font: 700 var(--name)/1.05 "Cormorant Garamond", Georgia, serif; color: #fbeccd; text-shadow: 0 1px 3px rgba(0, 0, 0, .9), 0 0 14px rgba(0, 0, 0, .7); }
+  .label span { font-size: var(--small); line-height: 1.15; color: #f0dcb4; text-shadow: 0 1px 3px rgba(0, 0, 0, .9); }
+  .scene.desk .app { --name: 2.2cqw; --small: 1.15cqw; }
+  .scene.phone .app { --name: 5cqw; --small: 0; }
   .scene.phone .label span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }   /* phones show the name; the line stays for screen readers */
 
   body.debug .label { outline: 2px solid #f0f; } body.debug .app { outline: 1px dashed #0ff; }
@@ -101,13 +103,13 @@
 </div>
 <script>
   // Where each app sits in each picture, in % of the picture: the object and stand
-  // (x, y, w, h) and the label's height inside that box. To add an app: ask ChatGPT
+  // (x, y, w, h). To add an app: ask ChatGPT
   // for the scene with the new object, then measure its box here (?debug shows the boxes).
   const SCENES = {
-    desk: { src: "img/scene/moody-desk.webp?v=1", w: 1536, h: 1024, apps: {
-      festa: [11.7, 32.2, 17.0, 38.3, 8.8], astro: [31.9, 33.2, 16.0, 37.3, 8.8], job: [51.4, 41.0, 17.7, 29.5, 8.8], soon: [73.7, 32.7, 17.3, 37.8, 8.8] } },
-    phone: { src: "img/scene/moody-phone.webp?v=1", w: 1024, h: 1536, apps: {
-      festa: [38.1, 6.2, 24.0, 19.7, 5.2], astro: [37.9, 27.0, 24.2, 20.1, 4.9], job: [37.1, 49.2, 25.9, 17.9, 5.5], soon: [37.3, 67.7, 25.4, 22.7, 5.7] } },
+    desk: { src: "img/scene/bare-desk.webp?v=1", w: 1536, h: 1024, apps: {
+      festa: [12.4, 34.2, 16.6, 31.4], astro: [30.6, 36.6, 17.3, 29.3], job: [49.2, 43.9, 25.4, 22.0], soon: [74.2, 33.2, 16.3, 32.4] } },
+    phone: { src: "img/scene/bare-phone.webp?v=1", w: 1024, h: 1536, apps: {
+      festa: [36.6, 6.2, 26.4, 17.8], astro: [37.6, 28.0, 24.7, 16.9], job: [35.6, 49.8, 38.6, 15.0], soon: [37.6, 67.7, 25.0, 21.0] } },
   };
   const APPS = [
     { id: "festa", href: "https://festa-demo.appdoivo.com" },
@@ -146,8 +148,8 @@
     img.alt = t.alt;
     $("apps").setAttribute("aria-label", t.apps);
     $("apps").innerHTML = APPS.map((a) => {
-      const [x, y, w, h, lh] = s.apps[a.id], tag = a.href ? "a" : "div";
-      const style = `left:${x}%;top:${y}%;width:${w}%;height:${h}%;--lh:${(lh / h) * 100}%`;
+      const [x, y, w, h] = s.apps[a.id];
+      const style = `left:${x}%;top:${y}%;width:${w}%;height:${h}%`;
       // A link is named by the words on its label; "Soon" is a picture with a name, not a link
       return a.href
         ? `<a class="app ${a.id}" href="${a.href}" style="${style}"><span class="label"><b>${esc(t[a.id][0])}</b> <span>${esc(t[a.id][1])}</span></span></a>`

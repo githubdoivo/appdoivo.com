@@ -39,7 +39,7 @@ test("the scene always covers the whole screen: no frame, no bands", async ({ pa
 
 test("the phone gets the tall scene, the computer the wide one; the labels sit inside the picture", async ({ page, isMobile }) => {
   await page.goto("/?lang=en");
-  await expect(page.locator("#scene-img")).toHaveAttribute("src", isMobile ? /moody-phone/ : /moody-desk/);
+  await expect(page.locator("#scene-img")).toHaveAttribute("src", isMobile ? /bare-phone/ : /bare-desk/);
   const pic = await page.locator("#scene-img").boundingBox();
   for (const l of await page.locator(".label").all()) {
     const b = await l.boundingBox();

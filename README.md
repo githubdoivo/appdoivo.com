@@ -3,8 +3,8 @@
 [![CI](https://github.com/githubdoivo/appdoivo.com/actions/workflows/ci.yml/badge.svg)](https://github.com/githubdoivo/appdoivo.com/actions/workflows/ci.yml)
 
 **App do Ivo**: the hub for the apps Ivo Lopes builds: one painted scene of a bookshelf in
-afternoon light (dimmed with a candle glow by night), one object per app on a wooden stand.
-The names are real text laid over the blank parchment labels, so they stay sharp and translate.
+afternoon light (dimmed with a candle glow by night), one object per app on the shelf, no plaques and no text on the page.
+Pointing at or tapping an object lights a small warm glow on it and shows its name under it.
 A wide scene for computers, a tall one for phones (`img/scene/`, from ChatGPT; originals in
 `~/Downloads/appdoivo-refs/scene/`). 
 
@@ -19,7 +19,7 @@ A wide scene for computers, a tall one for phones (`img/scene/`, from ChatGPT; o
 
 1. In the ChatGPT chat of the design, ask for both scenes again with the new object on its
    own stand with a blank label (and every other object in the same place).
-2. Save them as `img/scene/moody-desk.webp` and `moody-phone.webp` (bump `?v=`).
+2. Save them as `img/scene/bare-desk.webp` and `bare-phone.webp` (bump `?v=`).
 3. Add the app to `APPS` and its words to both languages in `index.html`, and measure its box
    in `SCENES` (open the page with `?debug` to see the boxes over the picture).
 
