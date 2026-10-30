@@ -67,7 +67,7 @@ test("Portuguese: from the browser, and remembered after switching", async ({ br
   const page = await ctx.newPage();
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("lang", "pt");
-  await expect(page.locator("#festa")).toContainText("Experimentar a demo");
+  await expect(page.locator("#festa")).toContainText("Experimentar a Demo");
   await expect(page.locator("#astro")).toContainText("Abrir");
   await page.locator("#lang").click();
   await expect(page.locator("#festa")).toContainText("Try the Demo");

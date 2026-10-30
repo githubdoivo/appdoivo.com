@@ -161,7 +161,7 @@
   // Words in both languages. ?lang=, then the visitor's last choice, then the browser.
   const T = {
     en: { core: "Small apps for a bigger life.", festa: "Birthday Party App", festaGo: "Try the Demo →", astro: "The Sky Right Now", astroGo: "Open →", other: "PT", otherLabel: "Ver em português", desc: "Apps by Ivo Lopes. Each app is an atom in one molecule." },
-    pt: { core: "Pequenas apps para uma vida maior.", festa: "App de festa de anos", festaGo: "Experimentar a demo →", astro: "O céu neste momento", astroGo: "Abrir →", other: "EN", otherLabel: "View in English", desc: "Apps de Ivo Lopes. Cada app é um átomo da mesma molécula." },
+    pt: { core: "Pequenas apps para uma vida maior.", festa: "App de Festa de Anos", festaGo: "Experimentar a Demo →", astro: "O Céu Neste Momento", astroGo: "Abrir →", other: "EN", otherLabel: "View in English", desc: "Apps de Ivo Lopes. Cada app é um átomo da mesma molécula." },
   };
   let saved = null; try { saved = localStorage.getItem("lang"); } catch (_) {}
   let lang = new URLSearchParams(location.search).get("lang") || saved || ((navigator.language || "").toLowerCase().startsWith("pt") ? "pt" : "en");
