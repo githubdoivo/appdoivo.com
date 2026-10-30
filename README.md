@@ -2,41 +2,26 @@
 
 [![CI](https://github.com/githubdoivo/appdoivo.com/actions/workflows/ci.yml/badge.svg)](https://github.com/githubdoivo/appdoivo.com/actions/workflows/ci.yml)
 
-**App do Ivo**: the hub for the apps Ivo Lopes builds, drawn as a ball-and-stick
-molecule. The centre atom is App do Ivo; each app is an atom bonded to it.
+**App do Ivo**: the hub for the apps Ivo Lopes builds, as a bookshelf in warm afternoon light
+(a dark wall and a candle by night). Each app is one object on the shelf with its name on a
+parchment plate; on a computer they share one shelf, on a phone each gets its own.
 
-| Atom | App | Address |
+| Object | App | Address |
 | --- | --- | --- |
-| Fe (red) | Festa, the birthday party app | demo: https://festa-demo.appdoivo.com (real app: festa.appdoivo.com, party time only) |
-| As (blue) | Astro, the sky right now | https://astro.appdoivo.com |
+| Jar with a mossy cottage | Festa, the birthday party app | demo: https://festa-demo.appdoivo.com |
+| Star globe | Astro, the sky at any moment | https://astro.appdoivo.com |
+| Typewriter and tape measure | Job, a CV tailored to every job | https://job.appdoivo.com |
+| Glass dome with a sprout | Soon, more to come | (not a link) |
 
-English and Portuguese: `?lang=`, then the visitor's last choice, then the browser's language.
+## Adding an app
 
-## Files
+1. In the same ChatGPT chat as the design, ask for the new object (prompt in
+   `~/Downloads/appdoivo-refs/PROMPTS-shelf.md`, "Later: every new app").
+2. Cut it out (macOS subject lifting), save it as `img/shelf/<id>.webp`, about 800 px.
+3. Add it to `APPS` and its name and line to both languages in `index.html`.
 
-Everything is in `index.html` (styles, words in both languages, the small script) plus `img/`:
+Images are never shown larger than they are (a test checks it), so the page stays sharp.
+English and Portuguese, labels in Title Case in both. Light and dark follow the device until
+the moon/sun button is used.
 
-| File | What it is |
-| --- | --- |
-| `img/paper.webp` | The graph paper |
-| `img/atom-*.webp` | Glass atoms (orange = App do Ivo, blue = Festa, purple = Astro; olive, yellow and pink are spare for new apps) |
-| `img/ring-big.webp`, `img/ring-small.webp` | The pencil rings and crosshairs |
-| `img/rod.png`, `img/dash.png` | A slice of the steel bond (stretched to any length) and one dash of a dotted bond |
-
-All cut out of the ChatGPT images in `~/Downloads/apps-refs/v1/` (green-screen sheets).
-
-- **App do Ivo (Ai)** is the contact: it opens an email to mail@ivolopes.com.
-- **The atoms show only their initials.** The details (name, one line, link) appear on hover
-  or keyboard focus with a mouse, and always on phones (no hover there).
-- **The pale empty atoms** are room for apps to come.
-- **Add an app:** copy an `<a class="atom …">` block with a spare atom image, add its
-  `.bond` (`data-to` = its id), its position (`--x --y --d`) for desktop and for phones
-  (the `max-aspect-ratio: 4/5` block), its label side, and its words in `en` and `pt`.
-  Turn one of the empty atoms into it so the molecule keeps its balance.
-
-## Rules
-
-- EN labels in Title Case; PT in sentence case, impersonal.
-- Tap targets 44px or more; no sideways scroll; labels never overlap (tested).
-
-`npm test` runs the Playwright tests (desktop + phone). Hosted on GitHub Pages.
+`npm test` runs the Playwright tests.
