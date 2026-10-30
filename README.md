@@ -2,9 +2,11 @@
 
 [![CI](https://github.com/githubdoivo/appdoivo.com/actions/workflows/ci.yml/badge.svg)](https://github.com/githubdoivo/appdoivo.com/actions/workflows/ci.yml)
 
-**App do Ivo**: the hub for the apps Ivo Lopes builds, as a bookshelf in warm afternoon light
-(a dark wall and a candle by night). Each app is one object on the shelf with its name on a
-parchment plate; on a computer they share one shelf, on a phone each gets its own.
+**App do Ivo**: the hub for the apps Ivo Lopes builds: one painted scene of a bookshelf in
+afternoon light (dimmed with a candle glow by night), one object per app on a wooden stand.
+The names are real text laid over the blank parchment labels, so they stay sharp and translate.
+A wide scene for computers, a tall one for phones (`img/scene/`, from ChatGPT; originals in
+`~/Downloads/appdoivo-refs/scene/`). The picture is never shown larger than it is.
 
 | Object | App | Address |
 | --- | --- | --- |
@@ -15,12 +17,13 @@ parchment plate; on a computer they share one shelf, on a phone each gets its ow
 
 ## Adding an app
 
-1. In the same ChatGPT chat as the design, ask for the new object (prompt in
-   `~/Downloads/appdoivo-refs/PROMPTS-shelf.md`, "Later: every new app").
-2. Cut it out (macOS subject lifting), save it as `img/shelf/<id>.webp`, about 800 px.
-3. Add it to `APPS` and its name and line to both languages in `index.html`.
+1. In the ChatGPT chat of the design, ask for both scenes again with the new object on its
+   own stand with a blank label (and every other object in the same place).
+2. Save them as `img/scene/day-desk.webp` and `day-phone.webp` (bump `?v=`).
+3. Add the app to `APPS` and its words to both languages in `index.html`, and measure its box
+   in `SCENES` (open the page with `?debug` to see the boxes over the picture).
 
-Images are never shown larger than they are (a test checks it), so the page stays sharp.
+A test checks the scene is never shown larger than it is and that every label's words fit.
 English and Portuguese, labels in Title Case in both. Light and dark follow the device until
 the moon/sun button is used.
 

@@ -5,7 +5,7 @@ test.beforeEach(async ({ page }) => {
   await page.addInitScript(() => { try { if (!sessionStorage.getItem("fresh")) { localStorage.clear(); sessionStorage.setItem("fresh", "1"); } } catch (_) {} });
 });
 
-test("the shelf renders every app, with no errors or missing files", async ({ page }) => {
+test("the scene renders every app, with no errors or missing files", async ({ page }) => {
   const errors = [];
   page.on("pageerror", (e) => errors.push(e.message));
   page.on("response", (r) => { if (r.status() >= 400 && r.url().startsWith("http://localhost")) errors.push(`${r.status()}: ${r.url()}`); });
@@ -24,7 +24,7 @@ test("each object links to its app and says where it goes; Soon is not a link", 
   await expect(page.locator("a.app.festa")).toHaveAttribute("href", "https://festa-demo.appdoivo.com");
   await expect(page.locator("a.app.astro")).toHaveAttribute("href", "https://astro.appdoivo.com");
   await expect(page.locator("a.app.job")).toHaveAttribute("href", "https://job.appdoivo.com");
-  await expect(page.locator("a.app.festa")).toHaveAccessibleName(/Festa.*demo/);
+  await expect(page.locator("a.app.festa")).toHaveAccessibleName(/Festa.*Celebrate/);
   await expect(page.locator("a.app.soon")).toHaveCount(0);
   await expect(page.locator("footer a")).toHaveAttribute("href", "mailto:mail@ivolopes.com");
 });
@@ -37,16 +37,23 @@ test("images are never shown larger than they are (always sharp)", async ({ page
   expect(blown).toEqual([]);
 });
 
-test("on a phone, one app per shelf; on a computer, one shelf", async ({ page, isMobile }) => {
+test("the phone gets the tall scene, the computer the wide one; the labels sit inside the picture", async ({ page, isMobile }) => {
   await page.goto("/?lang=en");
-  await expect(page.locator(".shelf")).toHaveCount(isMobile ? 4 : 1);
+  await expect(page.locator("#scene-img")).toHaveAttribute("src", isMobile ? /day-phone/ : /day-desk/);
+  const pic = await page.locator("#scene-img").boundingBox();
+  for (const l of await page.locator(".label").all()) {
+    const b = await l.boundingBox();
+    expect(b.x >= pic.x && b.x + b.width <= pic.x + pic.width + 1 && b.y + b.height <= pic.y + pic.height + 1).toBe(true);
+  }
+  // the words fit their labels
+  expect(await page.$$eval(".label", (ls) => ls.filter((l) => l.scrollWidth > l.clientWidth + 1).length)).toBe(0);
 });
 
 test("Portuguese, Title Case like the English", async ({ page }) => {
   await page.goto("/?lang=pt");
   await expect(page.locator(".tagline")).toHaveText("Pequenas Apps para uma Vida Maior");
-  await expect(page.locator(".plate.soon b")).toHaveText("Em Breve");
-  await expect(page.locator("a.app.astro")).toHaveAccessibleName(/O céu/i);
+  await expect(page.locator(".app.soon .label b")).toHaveText("Em Breve");
+  await expect(page.locator("a.app.astro")).toHaveAccessibleName(/O Céu/);
 });
 
 test("dark mode switch, sideways scroll, 44px targets, no serious accessibility problems", async ({ page }) => {
