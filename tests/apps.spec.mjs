@@ -39,7 +39,7 @@ test("images are never shown larger than they are (always sharp)", async ({ page
 
 test("the phone gets the tall scene, the computer the wide one; the labels sit inside the picture", async ({ page, isMobile }) => {
   await page.goto("/?lang=en");
-  await expect(page.locator("#scene-img")).toHaveAttribute("src", isMobile ? /day-phone/ : /day-desk/);
+  await expect(page.locator("#scene-img")).toHaveAttribute("src", isMobile ? /moody-phone/ : /moody-desk/);
   const pic = await page.locator("#scene-img").boundingBox();
   for (const l of await page.locator(".label").all()) {
     const b = await l.boundingBox();

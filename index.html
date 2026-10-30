@@ -9,7 +9,7 @@
 <meta property="og:description" content="Small apps by Ivo Lopes, each one an object on the shelf.">
 <meta property="og:url" content="https://appdoivo.com">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://appdoivo.com/og-image.png?v=4">
+<meta property="og:image" content="https://appdoivo.com/og-image.png?v=5">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -20,8 +20,8 @@
 <meta name="theme-color" content="#3a2414">
 <meta name="color-scheme" content="light dark">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="preload" as="image" href="img/scene/day-desk.webp?v=1" media="(min-width: 721px)">
-<link rel="preload" as="image" href="img/scene/day-phone.webp?v=1" media="(max-width: 720px)">
+<link rel="preload" as="image" href="img/scene/moody-desk.webp?v=1" media="(min-width: 721px)">
+<link rel="preload" as="image" href="img/scene/moody-phone.webp?v=1" media="(max-width: 720px)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet">
@@ -31,11 +31,11 @@
      The words are real text laid over the labels, so they stay sharp and translate.
      The picture is never shown larger than it is; around it, a blurred copy of itself
      fills the screen. By night the same scene is dimmed and lit by a candle glow. */
-  :root { --dim: 1; --sat: 1; --glow: 0; --ink: #2a1a0c; --sub: #4e3418; --title: #2c1c0e; --tagline: #4a3018; color-scheme: light; }
+  :root { --dim: 1; --sat: 1; --glow: 0; --ink: #2a1a0c; --sub: #2f1d0b; --title: #f6e8cc; --tagline: #e8d3ad; color-scheme: light; }
   @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) { --dim: .62; --sat: .9; --glow: 1; --title: #f6e8cc; --tagline: #e3cda5; color-scheme: dark; }
+    :root:not([data-theme="light"]) { --dim: .8; --sat: .92; --glow: 1; --title: #f6e8cc; --tagline: #e3cda5; color-scheme: dark; }
   }
-  :root[data-theme="dark"] { --dim: .62; --sat: .9; --glow: 1; --title: #f6e8cc; --tagline: #e3cda5; color-scheme: dark; }
+  :root[data-theme="dark"] { --dim: .8; --sat: .92; --glow: 1; --title: #f6e8cc; --tagline: #e3cda5; color-scheme: dark; }
 
   * { box-sizing: border-box; }
   html { background: #2b1b0f; }
@@ -52,8 +52,8 @@
     background: radial-gradient(45% 50% at 82% 55%, rgba(255, 170, 70, .28), transparent 70%), radial-gradient(30% 30% at 18% 52%, rgba(255, 190, 90, .18), transparent 70%); }
 
   header { position: absolute; z-index: 2; left: 0; right: 0; top: 7%; text-align: center; pointer-events: none; padding-inline: 18%; }
-  h1 { margin: 0; font: 700 9cqw/1 "Cormorant Garamond", Georgia, serif; color: var(--title); text-shadow: 0 1px 0 rgba(255, 236, 200, .35), 0 0 30px rgba(255, 220, 160, .25); }
-  .tagline { margin: .4em 0 0; font-size: 2.4cqw; color: var(--tagline); text-shadow: 0 0 12px rgba(255, 236, 200, .7); }
+  h1 { margin: 0; font: 700 9cqw/1 "Cormorant Garamond", Georgia, serif; color: var(--title); text-shadow: 0 2px 22px rgba(0, 0, 0, .55), 0 0 40px rgba(255, 190, 110, .25); }
+  .tagline { margin: .4em 0 0; font-size: 2.4cqw; color: var(--tagline); text-shadow: 0 2px 14px rgba(0, 0, 0, .6); }
   .scene.phone .tagline { font-size: 4.2cqw; }
   :root[data-theme="dark"] h1, :root[data-theme="dark"] .tagline { text-shadow: 0 2px 18px rgba(0, 0, 0, .6); }
   @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) h1, :root:not([data-theme="light"]) .tagline { text-shadow: 0 2px 18px rgba(0, 0, 0, .6); } }
@@ -75,11 +75,16 @@
     padding: 0 9%; filter: brightness(calc(.55 + var(--dim) * .45)); }
   .label b { font: 700 var(--name)/1.05 "Cormorant Garamond", Georgia, serif; color: var(--ink); }
   .label span { font-size: var(--small); line-height: 1.15; color: var(--sub); }
-  .scene.desk .app { --name: 2.05cqw; --small: 1.02cqw; }
+  .scene.desk .app { --name: 2.1cqw; --small: 1.1cqw; }
   .scene.phone .app { --name: 3.9cqw; --small: 0; }
   .scene.phone .label span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }   /* phones show the name; the line stays for screen readers */
 
   .scene.phone footer { bottom: auto; top: 100%; }
+  /* The phone scene has no empty wall at the top: the title sits above the picture */
+  .scene.phone { margin-top: calc(170px + env(safe-area-inset-top)); }
+  .scene.phone header { top: auto; bottom: 100%; padding: 0 16px 10px; }
+  .scene.phone h1 { font-size: 10cqw; }
+  .scene.phone .tools { top: calc(-160px); right: 12px; }
   body:has(.scene.phone) { place-items: start center; padding-bottom: 56px; }
   footer { position: absolute; z-index: 2; left: 0; right: 0; bottom: 1.4%; text-align: center; font-size: max(13px, 1.1cqw); }
   footer a { color: #f6e8cc; text-shadow: 0 1px 6px rgba(0, 0, 0, .7); text-underline-offset: 3px; display: inline-block; padding: 10px 6px; }
@@ -103,10 +108,10 @@
   // (x, y, w, h) and the label's height inside that box. To add an app: ask ChatGPT
   // for the scene with the new object, then measure its box here (?debug shows the boxes).
   const SCENES = {
-    desk: { src: "img/scene/day-desk.webp?v=1", w: 1536, h: 1024, apps: {
-      festa: [12.0, 30.5, 16.5, 37.4, 7.8], astro: [32.6, 27.5, 17.5, 40.3, 7.8], job: [52.6, 35.5, 17.2, 32.4, 8.1], soon: [73.1, 31.8, 18.3, 36.1, 8.3] } },
-    phone: { src: "img/scene/day-phone.webp?v=1", w: 1024, h: 1536, apps: {
-      festa: [38.5, 17.8, 22.8, 16.6, 3.7], astro: [38.2, 37.2, 23.2, 18.4, 3.4], job: [36.5, 58.6, 24.8, 17.0, 3.8], soon: [37.0, 77.0, 23.5, 19.0, 3.7] } },
+    desk: { src: "img/scene/moody-desk.webp?v=1", w: 1536, h: 1024, apps: {
+      festa: [11.7, 32.2, 17.0, 38.3, 8.8], astro: [31.9, 33.2, 16.0, 37.3, 8.8], job: [51.4, 41.0, 17.7, 29.5, 8.8], soon: [73.7, 32.7, 17.3, 37.8, 8.8] } },
+    phone: { src: "img/scene/moody-phone.webp?v=1", w: 1024, h: 1536, apps: {
+      festa: [38.1, 6.2, 24.0, 19.7, 5.2], astro: [37.9, 27.0, 24.2, 20.1, 4.9], job: [37.1, 49.2, 25.9, 17.9, 5.5], soon: [37.3, 67.7, 25.4, 22.7, 5.7] } },
   };
   const APPS = [
     { id: "festa", href: "https://festa-demo.appdoivo.com" },
