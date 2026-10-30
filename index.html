@@ -65,8 +65,17 @@
   /* Each app: a link over its object and stand, and its words on the label */
   .app { position: absolute; z-index: 2; display: block; border-radius: 12px; text-decoration: none; color: var(--ink); }
   a.app:hover .label b { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: .15em; }
-  a.app::before { content: ""; position: absolute; inset: 0 0 var(--lh); border-radius: 12px; transition: background .3s; }
-  a.app:hover::before { background: radial-gradient(closest-side, rgba(255, 220, 150, .16), transparent); }
+  /* Touching or pointing at an object lights it softly, like a lamp turned toward it
+     (instead of the browser's grey tap box, which showed the link's square edges) */
+  a.app { -webkit-tap-highlight-color: transparent; outline: none; }
+  /* The light: a small warm glow, like a firefly, appears on the object and breathes */
+  a.app::before { content: ""; position: absolute; left: 50%; top: 28%; width: 32%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; pointer-events: none;
+    background: radial-gradient(circle, #fff6dc 0 9%, rgba(255, 214, 140, .95) 16%, rgba(255, 180, 90, .45) 38%, rgba(255, 160, 70, .12) 62%, transparent 72%);
+    opacity: 0; scale: .4; transition: opacity .3s ease, scale .45s cubic-bezier(.2, 1.4, .4, 1); }
+  a.app:hover::before, a.app:focus-visible::before { opacity: .85; scale: 1; animation: breathe 2.4s ease-in-out .45s infinite; }
+  a.app:active::before { opacity: 1; scale: 1.25; transition-duration: .12s; }
+  @keyframes breathe { 50% { opacity: .55; scale: .82; } }
+  @media (prefers-reduced-motion: reduce) { a.app::before { transition: none; animation: none !important; } }
   .label { position: absolute; left: 0; right: 0; bottom: 0; height: var(--lh); display: grid; align-content: center; justify-items: center; text-align: center;
     padding: 0 9%; filter: brightness(calc(.55 + var(--dim) * .45)); }
   .label b { font: 700 var(--name)/1.05 "Cormorant Garamond", Georgia, serif; color: var(--ink); }
