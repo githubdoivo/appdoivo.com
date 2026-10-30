@@ -72,3 +72,10 @@ test("dark mode switch, sideways scroll, 44px targets, no serious accessibility 
   await page.reload();
   await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
 });
+
+test("nothing is pinned to the screen edges (iPhone Safari would paint a solid band over it)", async ({ page }) => {
+  await page.goto("/");
+  const pinned = await page.evaluate(() => [...document.querySelectorAll("body *")].filter((el) => ["fixed", "sticky"].includes(getComputedStyle(el).position)).map((el) => el.className));
+  expect(pinned).toEqual([]);
+  expect(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight)).toBeLessThanOrEqual(0);
+});

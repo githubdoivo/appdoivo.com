@@ -38,16 +38,19 @@
   :root[data-theme="dark"] { --dim: .8; --sat: .92; --glow: 1; --title: #f6e8cc; --tagline: #e3cda5; color-scheme: dark; }
 
   * { box-sizing: border-box; }
+  /* Nothing is pinned (no position: fixed): iPhone Safari (iOS 26) paints a solid band over
+     anything pinned to the top or bottom of the screen. The page itself never scrolls. */
   html { background: #2b1b0f; }
-  body { margin: 0; min-height: 100svh; display: grid; place-items: center; overflow-x: clip; font-family: "EB Garamond", Georgia, serif; background: #2b1b0f; }
+  html, body { height: 100%; overflow: hidden; }
+  body { margin: 0; display: grid; place-items: center; overflow-x: clip; font-family: "EB Garamond", Georgia, serif; background: #2b1b0f; }
   :focus-visible { outline: 3px solid #f2c46d; outline-offset: 3px; border-radius: 8px; }
 
   /* The scene: as large as the screen allows, never larger than the picture itself */
   /* The scene fills the whole screen, like a background with "cover": no frame, no blur.
      Its edges are cropped on screens of another shape; the apps sit near the middle. */
   /* Reaches past every screen edge, so nothing shows behind floating browser bars */
-  .stage { position: fixed; inset: -160px 0; overflow: hidden; }
-  .scene { --w: 1536; --h: 1024; position: absolute; left: 50%; top: 50%; translate: -50% -50%; z-index: 1; container-type: inline-size;
+  .stage { position: absolute; top: -160px; left: 0; right: 0; height: calc(100vh + 160px); height: calc(100lvh + 160px); overflow: hidden; }
+  .scene { --w: 1536; --h: 1024; position: absolute; left: 50%; top: calc(50% + 80px); translate: -50% -50%; z-index: 1; container-type: inline-size;
     width: max(100vw, calc(100lvh * var(--w) / var(--h))); aspect-ratio: var(--w) / var(--h); }
   .scene > img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; filter: brightness(var(--dim)) saturate(var(--sat)); }
   .scene::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: var(--glow); mix-blend-mode: screen;
@@ -55,7 +58,7 @@
 
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
-  .tools { position: fixed; z-index: 3; top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); display: flex; gap: 8px; }
+  .tools { position: absolute; z-index: 3; top: max(14px, env(safe-area-inset-top)); right: max(14px, env(safe-area-inset-right)); display: flex; gap: 8px; }
   .btn { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255, 236, 200, .55); border-radius: 10px;
     background: rgba(40, 24, 12, .35); color: #f6e8cc; font: 500 15px "EB Garamond", Georgia, serif; letter-spacing: .04em; cursor: pointer; backdrop-filter: blur(3px); }
   .btn:hover { background: rgba(40, 24, 12, .55); }
