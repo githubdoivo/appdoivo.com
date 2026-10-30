@@ -1,6 +1,6 @@
 # appdoivo.com
 
-[![CI](https://github.com/githubdoivo/apps/actions/workflows/ci.yml/badge.svg)](https://github.com/githubdoivo/apps/actions/workflows/ci.yml)
+[![CI](https://github.com/githubdoivo/appdoivo.com/actions/workflows/ci.yml/badge.svg)](https://github.com/githubdoivo/appdoivo.com/actions/workflows/ci.yml)
 
 **App do Ivo**: the hub for the apps Ivo Lopes builds, drawn as a ball-and-stick
 molecule. The centre atom is App do Ivo; each app is an atom bonded to it.
