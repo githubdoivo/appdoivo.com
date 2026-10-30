@@ -8,7 +8,7 @@ molecule. The centre atom is App do Ivo; each app is an atom bonded to it.
 | Atom | App | Address |
 | --- | --- | --- |
 | Fe (red) | Festa, the birthday party app | demo: https://festa-demo.appdoivo.com (real app: festa.appdoivo.com, party time only) |
-| As (blue) | Astro, astrology | astro.appdoivo.com (soon; dotted bond) |
+| As (blue) | Astro, the sky right now | https://astro.appdoivo.com |
 
 English and Portuguese: `?lang=`, then the visitor's last choice, then the browser's language.
 

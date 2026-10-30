@@ -74,7 +74,6 @@
   .core   { --x: 50%; --y: 46%; --d: clamp(96px, 22%, 132px); --c: var(--carbon); }
   .festa  { --x: 22%; --y: 22%; --d: clamp(72px, 16%, 100px); --c: var(--oxygen); }
   .astro  { --x: 78%; --y: 70%; --d: clamp(72px, 16%, 100px); --c: var(--nitrogen); }
-  .astro .ball { --c: #8ea4e0; }
   .festa .label, .astro .label, .core .label { position: absolute; top: 100%; margin-top: 10px; }
 
   /* Festa's name sits above its atom, so the bond never crosses a label */
@@ -104,7 +103,7 @@
   <div class="molecule" id="molecule">
     <svg class="bonds" viewBox="0 0 100 100" preserveAspectRatio="none" aria-hidden="true">
       <line data-from="core" data-to="festa"/>
-      <line class="soon" data-from="core" data-to="astro"/>
+      <line data-from="core" data-to="astro"/>
     </svg>
     <h1 class="atom core">
       <span class="ball" aria-hidden="true">Ai</span>
@@ -114,10 +113,10 @@
       <span class="ball" aria-hidden="true">Fe</span>
       <span class="label"><span class="name">Festa</span><span class="what" data-t="festa"></span><span class="go" data-t="festaGo"></span></span>
     </a>
-    <div class="atom astro" id="astro">
+    <a class="atom astro" id="astro" href="https://astro.appdoivo.com">
       <span class="ball" aria-hidden="true">As</span>
-      <span class="label"><span class="name">Astro</span><span class="what" data-t="astro"></span><span class="go" data-t="soon"></span></span>
-    </div>
+      <span class="label"><span class="name">Astro</span><span class="what" data-t="astro"></span><span class="go" data-t="astroGo"></span></span>
+    </a>
   </div>
 </main>
 
@@ -126,8 +125,8 @@
 <script>
   // Words in both languages. ?lang=, then the visitor's last choice, then the browser.
   const T = {
-    en: { core: "Apps by Ivo Lopes", festa: "Birthday Party App", festaGo: "Try the Demo →", astro: "Astrology App", soon: "Soon", other: "PT", otherLabel: "Ver em português", desc: "Apps by Ivo Lopes. Each app is an atom in one molecule." },
-    pt: { core: "Apps de Ivo Lopes", festa: "App de festa de anos", festaGo: "Experimentar a demo →", astro: "App de astrologia", soon: "Em breve", other: "EN", otherLabel: "View in English", desc: "Apps de Ivo Lopes. Cada app é um átomo da mesma molécula." },
+    en: { core: "Apps by Ivo Lopes", festa: "Birthday Party App", festaGo: "Try the Demo →", astro: "The Sky Right Now", astroGo: "Open →", soon: "Soon", other: "PT", otherLabel: "Ver em português", desc: "Apps by Ivo Lopes. Each app is an atom in one molecule." },
+    pt: { core: "Apps de Ivo Lopes", festa: "App de festa de anos", festaGo: "Experimentar a demo →", astro: "O céu neste momento", astroGo: "Abrir →", soon: "Em breve", other: "EN", otherLabel: "View in English", desc: "Apps de Ivo Lopes. Cada app é um átomo da mesma molécula." },
   };
   let saved = null; try { saved = localStorage.getItem("lang"); } catch (_) {}
   let lang = new URLSearchParams(location.search).get("lang") || saved || ((navigator.language || "").toLowerCase().startsWith("pt") ? "pt" : "en");

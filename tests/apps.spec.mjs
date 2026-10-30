@@ -18,12 +18,12 @@ test("the molecule renders with no errors or missing files", async ({ page }) =>
   expect(errors).toEqual([]);
 });
 
-test("Festa opens its demo, and Astro is marked Soon with no link", async ({ page }) => {
+test("Festa opens its demo and Astro opens the app", async ({ page }) => {
   await page.goto("/?lang=en");
   await expect(page.locator("#festa")).toHaveAttribute("href", "https://festa-demo.appdoivo.com");
   await expect(page.locator("#festa")).toContainText("Try the Demo");
-  await expect(page.locator("#astro")).toContainText("Soon");
-  await expect(page.locator("#astro a, a#astro")).toHaveCount(0);
+  await expect(page.locator("#astro")).toHaveAttribute("href", "https://astro.appdoivo.com");
+  await expect(page.locator("#astro")).toContainText("Open");
 });
 
 test("each bond runs from atom to atom", async ({ page }) => {
@@ -44,7 +44,7 @@ test("Portuguese: from the browser, and remembered after switching", async ({ br
   await page.goto("/");
   await expect(page.locator("html")).toHaveAttribute("lang", "pt");
   await expect(page.locator("#festa")).toContainText("Experimentar a demo");
-  await expect(page.locator("#astro")).toContainText("Em breve");
+  await expect(page.locator("#astro")).toContainText("Abrir");
   await page.locator("#lang").click();
   await expect(page.locator("#festa")).toContainText("Try the Demo");
   await page.reload();
@@ -73,7 +73,7 @@ test("everything stays on screen, labels never overlap, no sideways scroll", asy
 
 test("touch targets are at least 44px", async ({ page }) => {
   await page.goto("/?lang=en");
-  for (const sel of ["#lang", "#festa", "footer a"]) {
+  for (const sel of ["#lang", "#festa", "#astro", "footer a"]) {
     const b = await page.locator(sel).boundingBox();
     expect(Math.min(b.width, b.height), sel).toBeGreaterThanOrEqual(44);
   }
