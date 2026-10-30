@@ -6,7 +6,7 @@
 afternoon light (dimmed with a candle glow by night), one object per app on a wooden stand.
 The names are real text laid over the blank parchment labels, so they stay sharp and translate.
 A wide scene for computers, a tall one for phones (`img/scene/`, from ChatGPT; originals in
-`~/Downloads/appdoivo-refs/scene/`). The picture is never shown larger than it is.
+`~/Downloads/appdoivo-refs/scene/`). 
 
 | Object | App | Address |
 | --- | --- | --- |
@@ -23,7 +23,7 @@ A wide scene for computers, a tall one for phones (`img/scene/`, from ChatGPT; o
 3. Add the app to `APPS` and its words to both languages in `index.html`, and measure its box
    in `SCENES` (open the page with `?debug` to see the boxes over the picture).
 
-A test checks the scene is never shown larger than it is and that every label's words fit.
+The scene fills the whole screen like a background (no frame, no title on top); a test checks it covers every screen shape and that every label's words fit.
 English and Portuguese, labels in Title Case in both. Light and dark follow the device until
 the moon/sun button is used.
 

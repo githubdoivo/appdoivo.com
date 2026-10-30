@@ -29,12 +29,13 @@ test("each object links to its app and says where it goes; Soon is not a link", 
   await expect(page.locator("footer a")).toHaveAttribute("href", "mailto:mail@ivolopes.com");
 });
 
-test("images are never shown larger than they are (always sharp)", async ({ page }) => {
-  await page.setViewportSize({ width: 1920, height: 1080 });
-  await page.goto("/?lang=en");
-  await page.evaluate(() => Promise.all([...document.images].map((i) => i.decode().catch(() => {}))));
-  const blown = await page.$$eval("img", (ims) => ims.filter((i) => i.naturalWidth && i.getBoundingClientRect().width > i.naturalWidth / 1 + 1).map((i) => `${i.src.split("/").pop()} ${Math.round(i.getBoundingClientRect().width)}>${i.naturalWidth}`));
-  expect(blown).toEqual([]);
+test("the scene always covers the whole screen: no frame, no bands", async ({ page }) => {
+  for (const [w, h] of [[390, 844], [768, 1024], [1440, 900], [2560, 1080]]) {
+    await page.setViewportSize({ width: w, height: h });
+    await page.goto("/?lang=en");
+    const b = await page.locator("#scene-img").boundingBox();
+    expect(b.x <= 1 && b.y <= 1 && b.x + b.width >= w - 1 && b.y + b.height >= h - 1, `${w}x${h}`).toBe(true);
+  }
 });
 
 test("the phone gets the tall scene, the computer the wide one; the labels sit inside the picture", async ({ page, isMobile }) => {
@@ -51,7 +52,7 @@ test("the phone gets the tall scene, the computer the wide one; the labels sit i
 
 test("Portuguese, Title Case like the English", async ({ page }) => {
   await page.goto("/?lang=pt");
-  await expect(page.locator(".tagline")).toHaveText("Pequenas Apps para uma Vida Maior");
+  await expect(page).toHaveTitle("App do Ivo · Pequenas Apps para uma Vida Maior");
   await expect(page.locator(".app.soon .label b")).toHaveText("Em Breve");
   await expect(page.locator("a.app.astro")).toHaveAccessibleName(/O Céu/);
 });
