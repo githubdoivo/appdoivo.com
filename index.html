@@ -9,7 +9,7 @@
 <meta property="og:description" content="Small apps by Ivo Lopes, each one an object on the shelf.">
 <meta property="og:url" content="https://appdoivo.com">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://appdoivo.com/og-image.png?v=6">
+<meta property="og:image" content="https://appdoivo.com/og-image.png?v=7">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -20,8 +20,8 @@
 <meta name="theme-color" content="#3a2414">
 <meta name="color-scheme" content="light dark">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="preload" as="image" href="img/scene/bare-desk.webp?v=1" media="(min-width: 721px)">
-<link rel="preload" as="image" href="img/scene/bare-phone.webp?v=1" media="(max-width: 720px)">
+<link rel="preload" as="image" href="img/scene/shelf-desk.webp?v=1" media="(min-width: 721px)">
+<link rel="preload" as="image" href="img/scene/shelf-phone.webp?v=1" media="(max-width: 720px)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet">
@@ -106,10 +106,10 @@
   // (x, y, w, h). To add an app: ask ChatGPT
   // for the scene with the new object, then measure its box here (?debug shows the boxes).
   const SCENES = {
-    desk: { src: "img/scene/bare-desk.webp?v=1", w: 1536, h: 1024, apps: {
-      festa: [12.4, 34.2, 16.6, 31.4], astro: [30.6, 36.6, 17.3, 29.3], job: [49.2, 43.9, 25.4, 22.0], soon: [74.2, 33.2, 16.3, 32.4] } },
-    phone: { src: "img/scene/bare-phone.webp?v=1", w: 1024, h: 1536, apps: {
-      festa: [36.6, 6.2, 26.4, 17.8], astro: [37.6, 28.0, 24.7, 16.9], job: [35.6, 49.8, 38.6, 15.0], soon: [37.6, 67.7, 25.0, 21.0] } },
+    desk: { src: "img/scene/shelf-desk.webp?v=1", w: 1536, h: 1024, apps: {
+      festa: [27.7, 12.7, 17.6, 30.8], astro: [46.9, 12.2, 18.6, 31.4], job: [28.3, 52.2, 30.3, 23.1], soon: [62.4, 50.3, 14.3, 25.4] } },
+    phone: { src: "img/scene/shelf-phone.webp?v=1", w: 1024, h: 1536, apps: {
+      festa: [37.6, 6.0, 25.7, 19.1], astro: [39.4, 29.9, 23.3, 15.4], job: [35.2, 50.7, 39.1, 14.8], soon: [40.0, 69.0, 23.0, 17.9] } },
   };
   const APPS = [
     { id: "festa", href: "https://festa-demo.appdoivo.com" },

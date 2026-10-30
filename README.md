@@ -19,7 +19,7 @@ A wide scene for computers, a tall one for phones (`img/scene/`, from ChatGPT; o
 
 1. In the ChatGPT chat of the design, ask for both scenes again with the new object on its
    own stand with a blank label (and every other object in the same place).
-2. Save them as `img/scene/bare-desk.webp` and `bare-phone.webp` (bump `?v=`).
+2. Save them as `img/scene/shelf-desk.webp` and `shelf-phone.webp` (bump `?v=`).
 3. Add the app to `APPS` and its words to both languages in `index.html`, and measure its box
    in `SCENES` (open the page with `?debug` to see the boxes over the picture).
 
