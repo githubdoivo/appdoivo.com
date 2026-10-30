@@ -75,8 +75,6 @@
   .scene.phone .app { --name: 3.9cqw; --small: 0; }
   .scene.phone .label span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }   /* phones show the name; the line stays for screen readers */
 
-  footer { position: fixed; z-index: 2; left: 0; right: 0; bottom: max(6px, env(safe-area-inset-bottom)); text-align: center; font-size: 15px; }
-  footer a { color: #f6e8cc; text-shadow: 0 1px 6px rgba(0, 0, 0, .7); text-underline-offset: 3px; display: inline-block; padding: 10px 6px; }
   body.debug .label { outline: 2px solid #f0f; } body.debug .app { outline: 1px dashed #0ff; }
 </style>
 </head>
@@ -92,7 +90,6 @@
   <button class="btn" id="mode" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-moon" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/><g class="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg></button>
   <button class="btn" id="lang" type="button">PT</button>
 </div>
-<footer><a href="mailto:mail@ivolopes.com">mail@ivolopes.com</a></footer>
 <script>
   // Where each app sits in each picture, in % of the picture: the object and stand
   // (x, y, w, h) and the label's height inside that box. To add an app: ask ChatGPT

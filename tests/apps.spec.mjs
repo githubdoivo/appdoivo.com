@@ -15,7 +15,7 @@ test("the scene renders every app, with no errors or missing files", async ({ pa
   await page.evaluate(() => Promise.all([...document.images].map((i) => i.decode().catch(() => {}))));
   const broken = await page.$$eval("img", (ims) => ims.filter((i) => i.complete && i.naturalWidth === 0).map((i) => i.src));
   expect(broken).toEqual([]);
-  for (const f of ["favicon.svg", "favicon.ico", "apple-touch-icon.png", "og-image.png"]) expect((await page.request.get(`/${f}`)).status(), f).toBe(200);
+  for (const f of ["favicon.svg", "favicon.ico", "apple-touch-icon.png", "og-image.png", ".well-known/security.txt"]) expect((await page.request.get(`/${f}`)).status(), f).toBe(200);
   expect(errors).toEqual([]);
 });
 
@@ -26,7 +26,6 @@ test("each object links to its app and says where it goes; Soon is not a link", 
   await expect(page.locator("a.app.job")).toHaveAttribute("href", "https://job.appdoivo.com");
   await expect(page.locator("a.app.festa")).toHaveAccessibleName(/Festa.*Celebrate/);
   await expect(page.locator("a.app.soon")).toHaveCount(0);
-  await expect(page.locator("footer a")).toHaveAttribute("href", "mailto:mail@ivolopes.com");
 });
 
 test("the scene always covers the whole screen: no frame, no bands", async ({ page }) => {
