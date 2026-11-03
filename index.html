@@ -42,6 +42,10 @@
      anything pinned to the top or bottom of the screen. The page itself never scrolls. */
   html { background: #2b1b0f; }
   html, body { height: 100%; overflow: hidden; }
+  /* Phones: Safari's bottom bar sits a little below the "large" screen height,
+     so the scene reaches that much further down. */
+  :root { --below: 0px; }
+  @media (pointer: coarse) { :root { --below: 120px; } }
   body { margin: 0; display: grid; place-items: center; overflow-x: clip; font-family: "EB Garamond", Georgia, serif; background: #2b1b0f; }
   :focus-visible { outline: 3px solid #f2c46d; outline-offset: 3px; border-radius: 8px; }
 
@@ -49,9 +53,9 @@
   /* The scene fills the whole screen, like a background with "cover": no frame, no blur.
      Its edges are cropped on screens of another shape; the apps sit near the middle. */
   /* Reaches past every screen edge, so nothing shows behind floating browser bars */
-  .stage { position: absolute; top: -160px; left: 0; right: 0; height: calc(100vh + 160px); height: calc(100lvh + 160px); overflow: hidden; }
-  .scene { --w: 1536; --h: 1024; position: absolute; left: 50%; top: calc(50% + 80px); translate: -50% -50%; z-index: 1; container-type: inline-size;
-    width: max(100vw, calc(100lvh * var(--w) / var(--h))); aspect-ratio: var(--w) / var(--h); }
+  .stage { position: absolute; top: -160px; left: 0; right: 0; height: calc(100vh + 160px + var(--below)); height: calc(100lvh + 160px + var(--below)); overflow: hidden; }
+  .scene { --w: 1536; --h: 1024; position: absolute; left: 50%; top: calc(160px + (100lvh + var(--below)) / 2); translate: -50% -50%; z-index: 1; container-type: inline-size;
+    width: max(100vw, calc((100lvh + var(--below)) * var(--w) / var(--h))); aspect-ratio: var(--w) / var(--h); }
   .scene > img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; filter: brightness(var(--dim)) saturate(var(--sat)); }
   .scene::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: var(--glow); mix-blend-mode: screen;
     background: radial-gradient(45% 50% at 82% 55%, rgba(255, 170, 70, .28), transparent 70%), radial-gradient(30% 30% at 18% 52%, rgba(255, 190, 90, .18), transparent 70%); }

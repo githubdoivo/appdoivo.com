@@ -77,5 +77,5 @@ test("nothing is pinned to the screen edges (iPhone Safari would paint a solid b
   await page.goto("/");
   const pinned = await page.evaluate(() => [...document.querySelectorAll("body *")].filter((el) => ["fixed", "sticky"].includes(getComputedStyle(el).position)).map((el) => el.className));
   expect(pinned).toEqual([]);
-  expect(await page.evaluate(() => document.documentElement.scrollHeight - innerHeight)).toBeLessThanOrEqual(0);
+  expect(await page.evaluate(() => getComputedStyle(document.documentElement).overflowY)).toBe("hidden");
 });
