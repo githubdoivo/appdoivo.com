@@ -79,3 +79,21 @@ test("nothing is pinned to the screen edges (iPhone Safari would paint a solid b
   expect(pinned).toEqual([]);
   expect(await page.evaluate(() => getComputedStyle(document.documentElement).overflowY)).toBe("hidden");
 });
+
+test("the window sits scrolled down by the painting strip above it, so the clock area shows the painting", async ({ page }) => {
+  await page.goto("/?lang=en");
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(160);
+  const top = await page.locator(".tools").evaluate((el) => el.getBoundingClientRect().top);
+  expect(top).toBeGreaterThanOrEqual(0);
+  expect(top).toBeLessThan(80);
+  await page.evaluate(() => window.scrollTo(0, 0));
+  await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(160);
+});
+
+test("holding an object shows no lifted copy: links not draggable, no callout", async ({ page }) => {
+  await page.goto("/?lang=en");
+  const links = page.locator("a.app");
+  expect(await links.count()).toBeGreaterThan(0);
+  for (const a of await links.all()) await expect(a).toHaveAttribute("draggable", "false");
+  expect(await page.locator(".scene > img").evaluate((el) => getComputedStyle(el).pointerEvents)).toBe("none");
+});
