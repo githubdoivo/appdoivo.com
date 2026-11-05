@@ -96,3 +96,14 @@ test("holding an object shows no lifted copy: links not draggable, no callout", 
   for (const a of await links.all()) await expect(a).toHaveAttribute("draggable", "false");
   expect(await page.locator(".scene > img").evaluate((el) => getComputedStyle(el).pointerEvents)).toBe("none");
 });
+
+test("on a touch screen, a tap lights the object and shows its name before the app opens", async ({ page, isMobile }) => {
+  test.skip(!isMobile, "touch only");
+  await page.route("https://ledger.appdoivo.com/**", (r) => r.fulfill({ body: "ledger" }));
+  await page.goto("/?lang=en");
+  const a = page.locator("a.app.ledger");
+  await a.tap();
+  await expect(a).toHaveClass(/lit/);
+  await expect(a.locator(".label")).toHaveCSS("opacity", "1");
+  await page.waitForURL("https://ledger.appdoivo.com/**", { timeout: 3000 });
+});

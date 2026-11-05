@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- csp-meta: only this site's own scripts run (refresh with ~/bin/csp-meta after editing an inline script) -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2IF1OqlYQEsPupU5Mrj3Qv8UhEPG8o6AQ3j7c6CNrDo=' 'sha256-zejn14cPkEhdDi/z5Dp88ZpPPR1zoxKxqYA0k7u3mSk='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2IF1OqlYQEsPupU5Mrj3Qv8UhEPG8o6AQ3j7c6CNrDo=' 'sha256-9XtrfY4QuD4SWun7QnWOKo3Maz3q4oibtP6GyOqzfis='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <title>App do Ivo · Small Apps for a Bigger Life</title>
 <meta name="description" content="Small apps by Ivo Lopes, each one an object on the shelf: Festa, Astro, Quill, Job, Ledger, and more to come.">
 <meta property="og:title" content="App do Ivo · Small Apps for a Bigger Life">
@@ -91,7 +91,8 @@
      (hovered, focused or tapped). Screen readers always get it. */
   .label { position: absolute; left: var(--cx, 50%); width: 140%; margin-left: -70%; top: 100%; display: grid; justify-items: center; text-align: center; gap: 2px; padding-top: 6px; pointer-events: none;
     opacity: 0; translate: 0 -4px; transition: opacity .35s ease, translate .35s ease; }
-  a.app:hover .label, a.app:focus-visible .label, a.app:active .label { opacity: 1; translate: 0 0; }
+  a.app:hover .label, a.app:focus-visible .label, a.app:active .label, a.app.lit .label { opacity: 1; translate: 0 0; }
+  a.app.lit::before { opacity: 1; transition-duration: .2s; }
   .label b { font: 700 var(--name)/1.05 "Cormorant Garamond", Georgia, serif; color: #fbeccd; text-shadow: 0 1px 3px rgba(0, 0, 0, .9), 0 0 14px rgba(0, 0, 0, .7); }
   .label span { font-size: var(--small); line-height: 1.15; color: #f0dcb4; text-shadow: 0 1px 3px rgba(0, 0, 0, .9); }
   .scene.desk .app { --name: 2.2cqw; --small: 1.15cqw; }
@@ -179,6 +180,17 @@
   }
   $("lang").addEventListener("click", () => { lang = lang === "pt" ? "en" : "pt"; try { localStorage.setItem("lang", lang); } catch (_) {} render(); });
   phone.addEventListener("change", render);
+  // On touch screens a tap first lights the object and shows its name for a moment, then
+  // opens the app (a tap has no hover, so the light was never seen before leaving).
+  const touch = matchMedia("(hover: none)"), calm = matchMedia("(prefers-reduced-motion: reduce)");
+  $("apps").addEventListener("click", (e) => {
+    const a = e.target.closest("a.app"); if (!a || !touch.matches || e.metaKey || e.ctrlKey) return;
+    e.preventDefault();
+    document.querySelectorAll("a.app.lit").forEach((x) => x.classList.remove("lit"));
+    a.classList.add("lit");
+    setTimeout(() => { location.href = a.href; }, calm.matches ? 250 : 700);
+  });
+  window.addEventListener("pageshow", () => document.querySelectorAll("a.app.lit").forEach((x) => x.classList.remove("lit")));
   render();
 </script>
 <!-- iPhone Safari fills the area behind the clock with whatever lies just above the
