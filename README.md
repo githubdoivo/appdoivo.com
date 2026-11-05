@@ -2,19 +2,19 @@
 
 [![CI](https://github.com/githubdoivo/appdoivo.com/actions/workflows/ci.yml/badge.svg)](https://github.com/githubdoivo/appdoivo.com/actions/workflows/ci.yml)
 
-**App do Ivo**: the hub for the apps Ivo Lopes builds: one painted scene of a bookshelf in
-afternoon light (dimmed with a candle glow by night), one object per app on the shelf, no plaques and no text on the page.
+**App do Ivo**: the hub for the apps Ivo Lopes builds: one painted scene of open bookshelves in
+afternoon light (shelf v3, chosen 2026-11-05) (dimmed with a candle glow by night), one object per app on the shelf, no plaques and no text on the page.
 Pointing at or tapping an object lights a small warm glow on it and shows its name under it.
 A wide scene for computers, a tall one for phones (`img/scene/`, from ChatGPT; originals in
 `~/Downloads/appdoivo-refs/design/`, chat "Hub · Shelf (appdoivo.com)" in the ChatGPT project "Claude Design Studio"). 
 
 | Object | App | Address |
 | --- | --- | --- |
-| Jar with a mossy cottage | Festa, the birthday party app | demo: https://festa-demo.appdoivo.com |
-| Star globe | Astro, the sky at any moment | https://astro.appdoivo.com |
-| Stack of notebooks with an instant photo | Journal, a quiet place for your mind | https://journal.appdoivo.com |
-| Typewriter and tape measure | Job, a CV tailored to every job | https://job.appdoivo.com |
-| Leather ledger with a coin purse | Expenses, your money month by month | https://expenses.appdoivo.com |
+| Little lit house with a brass key | Festa, the party app (any year's theme) | demo: https://festa-demo.appdoivo.com |
+| Brass astrolabe | Astro, the sky at any moment | https://astro.appdoivo.com |
+| Quill in an inkwell, open notebook | Quill, a quiet place for your mind | https://quill.appdoivo.com |
+| Typewriter | Job, a CV tailored to every job | https://job.appdoivo.com |
+| Leather ledger with coins | Ledger, your money month by month | https://ledger.appdoivo.com |
 | Glass dome with a sprout | Soon, more to come | (not a link) |
 
 ## Adding an app
