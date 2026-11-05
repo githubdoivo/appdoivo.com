@@ -58,21 +58,18 @@ test("Portuguese, Title Case like the English", async ({ page }) => {
   await expect(page.locator("a.app.astro")).toHaveAccessibleName(/O Céu/);
 });
 
-test("dark mode switch, sideways scroll, 44px targets, no serious accessibility problems", async ({ page }) => {
+test("one look (no dark switch), sideways scroll, 44px targets, no serious accessibility problems", async ({ page }) => {
   for (const scheme of ["light", "dark"]) {
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto("/?lang=en");
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
-    for (const sel of ["#lang", "#mode", "a.app >> nth=0"]) expect((await page.locator(sel).boundingBox()).height, sel).toBeGreaterThanOrEqual(44);
+    for (const sel of ["#lang", "a.app >> nth=0"]) expect((await page.locator(sel).boundingBox()).height, sel).toBeGreaterThanOrEqual(44);
     const r = await new AxeBuilder({ page }).analyze();
     expect(r.violations.filter((v) => ["serious", "critical"].includes(v.impact)).map((v) => `${v.id}: ${v.nodes.map((n) => n.target).join(", ")}`), scheme).toEqual([]);
   }
   await page.emulateMedia({ colorScheme: "light" });
   await page.goto("/?lang=en");
-  await page.locator("#mode").click();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
-  await page.reload();
-  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await expect(page.locator("#mode")).toHaveCount(0);
 });
 
 test("nothing is pinned to the screen edges (iPhone Safari would paint a solid band over it)", async ({ page }) => {

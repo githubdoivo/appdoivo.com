@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- csp-meta: only this site's own scripts run (refresh with ~/bin/csp-meta after editing an inline script) -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2IF1OqlYQEsPupU5Mrj3Qv8UhEPG8o6AQ3j7c6CNrDo=' 'sha256-V5qJba2Pfl34pHXr5tflSMB61vARUx4poZzLZG+ElkI=' 'sha256-jsIL2YxIedmdyETGunVxRE+Tz1eu3zwfhS9p55twXzU='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2IF1OqlYQEsPupU5Mrj3Qv8UhEPG8o6AQ3j7c6CNrDo=' 'sha256-SkdrCiM05V3aA42iRJLJ3qoOX1Ql+kauEjUEwSfllyc='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <title>App do Ivo · Small Apps for a Bigger Life</title>
 <meta name="description" content="Small apps by Ivo Lopes, each one an object on the shelf: Festa, Astro, Quill, Job, Ledger, and more to come.">
 <meta property="og:title" content="App do Ivo · Small Apps for a Bigger Life">
@@ -20,8 +20,7 @@
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <meta name="theme-color" content="#2b1b0f">
-<meta name="color-scheme" content="light dark">
-<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
+<meta name="color-scheme" content="light">
 <link rel="preload" as="image" href="img/scene/shelf-desk.webp?v=3" media="(min-width: 721px)">
 <link rel="preload" as="image" href="img/scene/shelf-phone.webp?v=4" media="(max-width: 720px)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,12 +31,9 @@
      afternoon light, one object per app on a wooden stand with a blank parchment label.
      The words are real text laid over the labels, so they stay sharp and translate.
      The picture is never shown larger than it is; around it, a blurred copy of itself
-     fills the screen. By night the same scene is dimmed and lit by a candle glow. */
-  :root { --dim: 1; --sat: 1; --glow: 0; --ink: #2a1a0c; --sub: #2f1d0b; --title: #f6e8cc; --tagline: #e8d3ad; color-scheme: light; }
-  @media (prefers-color-scheme: dark) {
-    :root:not([data-theme="light"]) { --dim: .8; --sat: .92; --glow: 1; --title: #f6e8cc; --tagline: #e3cda5; color-scheme: dark; }
-  }
-  :root[data-theme="dark"] { --dim: .8; --sat: .92; --glow: 1; --title: #f6e8cc; --tagline: #e3cda5; color-scheme: dark; }
+     fills the screen. */
+  /* One look, always (the dark/light switch was removed on 2026-11-05: the painting is the light) */
+  :root { --ink: #2a1a0c; --sub: #2f1d0b; --title: #f6e8cc; --tagline: #e8d3ad; color-scheme: light; }
 
   * { box-sizing: border-box; }
   /* Nothing is pinned (no position: fixed): iPhone Safari (iOS 26) paints a solid band over
@@ -59,12 +55,10 @@
   /* --fx: the point of the picture (0 to 1 across) kept in the middle of the screen; the
      clamp stops the picture's edge from ever coming inside the screen */
   .scene { --w: 1536; --h: 1024; --fx: .5; --sw: max(100vw, calc((100lvh + var(--below)) * var(--w) / var(--h)));
-    position: absolute; left: clamp(calc(100vw - var(--sw)), calc(50vw - var(--sw) * var(--fx)), 0px); top: calc(160px + (100lvh + var(--below)) / 2); translate: 0 -50%; z-index: 1; container-type: inline-size;
+    position: absolute; left: clamp(calc(100vw - var(--sw)), calc(50vw - var(--sw) * var(--fx)), 0px); --sh: calc(var(--sw) * var(--h) / var(--w)); --fy: .38; top: calc(160px + clamp(calc(100lvh + var(--below) - var(--sh)), calc((100lvh + var(--below)) / 2 - var(--sh) * var(--fy)), 0px)); z-index: 1; container-type: inline-size;
     width: var(--sw); aspect-ratio: var(--w) / var(--h); }
-  .scene.phone { --fx: .52; }   /* the phone painting's objects sit a little right of centre */
-  .scene > img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; filter: brightness(var(--dim)) saturate(var(--sat)); }
-  .scene::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: var(--glow); mix-blend-mode: screen;
-    background: radial-gradient(45% 50% at 82% 55%, rgba(255, 170, 70, .28), transparent 70%), radial-gradient(30% 30% at 18% 52%, rgba(255, 190, 90, .18), transparent 70%); }
+  .scene.phone { --fx: .52; --fy: .45; }   /* the phone painting's objects sit a little right of centre */
+  .scene > img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
 
@@ -73,8 +67,6 @@
     background: rgba(40, 24, 12, .35); color: #f6e8cc; font: 500 15px "EB Garamond", Georgia, serif; letter-spacing: .04em; cursor: pointer; backdrop-filter: blur(3px); }
   .btn:hover { background: rgba(40, 24, 12, .55); }
   .btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
-  .btn .i-sun, .btn.is-dark .i-moon { display: none; }
-  .btn.is-dark .i-sun { display: inline; }
 
   /* Each app: a link over its object and stand, and its words on the label */
   .app { position: absolute; z-index: 2; display: block; border-radius: 12px; text-decoration: none; color: var(--ink); }
@@ -83,13 +75,17 @@
   a.app { -webkit-tap-highlight-color: transparent; outline: none; -webkit-touch-callout: none; -webkit-user-select: none; user-select: none; -webkit-user-drag: none; }
   /* Holding the painting or an object shows no lifted copy or save menu */
   .scene > img { -webkit-touch-callout: none; -webkit-user-drag: none; -webkit-user-select: none; user-select: none; pointer-events: none; }
-  /* The light: a small warm glow, like a firefly, appears on the object and breathes */
-  a.app::before { content: ""; position: absolute; left: var(--cx, 50%); top: 40%; width: 34%; aspect-ratio: 1; translate: -50% -50%; border-radius: 50%; pointer-events: none;
-    background: radial-gradient(circle, #fff6dc 0 9%, rgba(255, 214, 140, .95) 16%, rgba(255, 180, 90, .45) 38%, rgba(255, 160, 70, .12) 62%, transparent 72%);
-    opacity: 0; scale: .4; transition: opacity .3s ease, scale .45s cubic-bezier(.2, 1.4, .4, 1); }
-  a.app:hover::before, a.app:focus-visible::before { opacity: .85; scale: 1; animation: breathe 2.4s ease-in-out .45s infinite; }
-  a.app:active::before { opacity: 1; scale: 1.25; transition-duration: .12s; }
-  @keyframes breathe { 50% { opacity: .55; scale: .82; } }
+  /* The light: when pointed at, the object itself brightens softly, like a warm lamp turned
+     toward it: the picture under the object's area is lifted (backdrop brightness) with a
+     soft oval edge that follows the object's own box, plus a faint warm tint. No dot. */
+  a.app::before { content: ""; position: absolute; inset: -8% -6%; border-radius: 50%; pointer-events: none;
+    -webkit-backdrop-filter: brightness(1.28) saturate(1.12); backdrop-filter: brightness(1.28) saturate(1.12);
+    background: radial-gradient(closest-side, rgba(255, 214, 150, .16), rgba(255, 196, 120, .07) 60%, transparent);
+    -webkit-mask: radial-gradient(closest-side, #000 52%, rgba(0, 0, 0, .55) 74%, transparent); mask: radial-gradient(closest-side, #000 52%, rgba(0, 0, 0, .55) 74%, transparent);
+    opacity: 0; transition: opacity .45s ease; }
+  a.app:hover::before, a.app:focus-visible::before { opacity: 1; animation: glow 3.2s ease-in-out .5s infinite; }
+  a.app:active::before { opacity: 1; transition-duration: .12s; }
+  @keyframes glow { 50% { opacity: .78; } }
   @media (prefers-reduced-motion: reduce) { a.app::before { transition: none; animation: none !important; } }
   /* No plaques: an app's name appears just under its object while the object is lit
      (hovered, focused or tapped). Screen readers always get it. */
@@ -114,7 +110,6 @@
   </div>
 </div>
 <div class="tools">
-  <button class="btn" id="mode" type="button"><svg viewBox="0 0 24 24" aria-hidden="true"><path class="i-moon" d="M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5Z"/><g class="i-sun"><circle cx="12" cy="12" r="4"/><path d="M12 2v2.5M12 19.5V22M2 12h2.5M19.5 12H22M4.9 4.9l1.8 1.8M17.3 17.3l1.8 1.8M4.9 19.1l1.8-1.8M17.3 6.7l1.8-1.8"/></g></svg></button>
   <button class="btn" id="lang" type="button">PT</button>
 </div>
 <script>
@@ -138,7 +133,7 @@
     { id: "soon", href: null },
   ];
   const T = {
-    en: { tagline: "Small Apps for a Bigger Life", other: "PT", otherLabel: "Ver em português", toDark: "Dark Mode", toLight: "Light Mode", apps: "Apps",
+    en: { tagline: "Small Apps for a Bigger Life", other: "PT", otherLabel: "Ver em português", apps: "Apps",
       title: "App do Ivo · Small Apps for a Bigger Life", alt: "Open bookshelves in afternoon light: a little lit house with a brass key, a brass astrolabe, a quill in an inkwell beside an open notebook, a typewriter, a leather ledger with coins and a glass dome with a sprout.",
       festa: ["Festa", "Celebrate the Days That Matter", "Festa, the birthday party app: try the demo"],
       astro: ["Astro", "The Sky at Any Moment", "Astro, the sky at any moment"],
@@ -146,7 +141,7 @@
       quill: ["Quill", "A Quiet Place for Your Mind", "Quill, a private diary, notes and photo albums"],
       ledger: ["Ledger", "Your Money, Month by Month", "Ledger, your money month by month"],
       soon: ["Soon", "More to Come", "More apps to come"] },
-    pt: { tagline: "Pequenas Apps para uma Vida Maior", other: "EN", otherLabel: "View in English", toDark: "Modo Escuro", toLight: "Modo Claro", apps: "Apps",
+    pt: { tagline: "Pequenas Apps para uma Vida Maior", other: "EN", otherLabel: "View in English", apps: "Apps",
       title: "App do Ivo · Pequenas Apps para uma Vida Maior", alt: "Estantes à luz da tarde: uma casinha iluminada com uma chave de latão, um astrolábio, uma pena num tinteiro junto a um caderno aberto, uma máquina de escrever, um livro de contas com moedas e uma redoma com um rebento.",
       festa: ["Festa", "Celebrar os Dias Que Importam", "Festa, a app de festa de anos: experimentar a demo"],
       astro: ["Astro", "O Céu a Qualquer Momento", "Astro, o céu a qualquer momento"],
@@ -181,14 +176,8 @@
         : `<div class="app ${a.id}" role="img" aria-label="${esc(t[a.id][2])}" style="${style}"><span class="label" aria-hidden="true"><b>${esc(t[a.id][0])}</b><span>${esc(t[a.id][1])}</span></span></div>`;
     }).join("");
     const b = $("lang"); b.textContent = t.other; b.setAttribute("aria-label", `${t.other}: ${t.otherLabel}`);
-    paint();
   }
-  // Dark or light: the device decides until a choice is made here
-  const isDark = () => (document.documentElement.dataset.theme || (matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light")) === "dark";
-  function paint() { const m = $("mode"), d = isDark(); m.classList.toggle("is-dark", d); m.setAttribute("aria-label", d ? T[lang].toLight : T[lang].toDark); m.title = m.getAttribute("aria-label"); }
-  $("mode").addEventListener("click", () => { const n = isDark() ? "light" : "dark"; document.documentElement.dataset.theme = n; try { localStorage.setItem("theme", n); } catch (_) {} paint(); });
   $("lang").addEventListener("click", () => { lang = lang === "pt" ? "en" : "pt"; try { localStorage.setItem("lang", lang); } catch (_) {} render(); });
-  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", paint);
   phone.addEventListener("change", render);
   render();
 </script>
