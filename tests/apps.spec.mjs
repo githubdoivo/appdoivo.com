@@ -11,7 +11,7 @@ test("the scene renders every app, with no errors or missing files", async ({ pa
   page.on("response", (r) => { if (r.status() >= 400 && r.url().startsWith("http://localhost")) errors.push(`${r.status()}: ${r.url()}`); });
   await page.goto("/?lang=en");
   await expect(page.locator("h1")).toHaveText("App do Ivo");
-  await expect(page.locator(".app")).toHaveCount(4);
+  await expect(page.locator(".app")).toHaveCount(6);
   await page.evaluate(() => Promise.all([...document.images].map((i) => i.decode().catch(() => {}))));
   const broken = await page.$$eval("img", (ims) => ims.filter((i) => i.complete && i.naturalWidth === 0).map((i) => i.src));
   expect(broken).toEqual([]);
@@ -24,6 +24,8 @@ test("each object links to its app and says where it goes; Soon is not a link", 
   await expect(page.locator("a.app.festa")).toHaveAttribute("href", "https://festa-demo.appdoivo.com");
   await expect(page.locator("a.app.astro")).toHaveAttribute("href", "https://astro.appdoivo.com");
   await expect(page.locator("a.app.job")).toHaveAttribute("href", "https://job.appdoivo.com");
+  await expect(page.locator("a.app.journal")).toHaveAttribute("href", "https://journal.appdoivo.com");
+  await expect(page.locator("a.app.expenses")).toHaveAttribute("href", "https://expenses.appdoivo.com");
   await expect(page.locator("a.app.festa")).toHaveAccessibleName(/Festa.*Celebrate/);
   await expect(page.locator("a.app.soon")).toHaveCount(0);
 });

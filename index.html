@@ -4,14 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- csp-meta: only this site's own scripts run (refresh with ~/bin/csp-meta after editing an inline script) -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2IF1OqlYQEsPupU5Mrj3Qv8UhEPG8o6AQ3j7c6CNrDo=' 'sha256-Q251S3Dwxf5ZvD4Dosj3OUp2luLpG5qocmvu0SJpms0=' 'sha256-V5qJba2Pfl34pHXr5tflSMB61vARUx4poZzLZG+ElkI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2IF1OqlYQEsPupU5Mrj3Qv8UhEPG8o6AQ3j7c6CNrDo=' 'sha256-HP7qtzkDvTQrwBIE5cVG3Av946qu8h9AoY9tzcp2Ok4=' 'sha256-V5qJba2Pfl34pHXr5tflSMB61vARUx4poZzLZG+ElkI='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <title>App do Ivo · Small Apps for a Bigger Life</title>
-<meta name="description" content="Small apps by Ivo Lopes, each one an object on the shelf: Festa, Astro, Job, and more to come.">
+<meta name="description" content="Small apps by Ivo Lopes, each one an object on the shelf: Festa, Astro, Journal, Job, Expenses, and more to come.">
 <meta property="og:title" content="App do Ivo · Small Apps for a Bigger Life">
 <meta property="og:description" content="Small apps by Ivo Lopes, each one an object on the shelf.">
 <meta property="og:url" content="https://appdoivo.com">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://appdoivo.com/og-image.png?v=7">
+<meta property="og:image" content="https://appdoivo.com/og-image.png?v=8">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
@@ -22,8 +22,8 @@
 <meta name="theme-color" content="#2b1b0f">
 <meta name="color-scheme" content="light dark">
 <script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-<link rel="preload" as="image" href="img/scene/shelf-desk.webp?v=1" media="(min-width: 721px)">
-<link rel="preload" as="image" href="img/scene/shelf-phone.webp?v=1" media="(max-width: 720px)">
+<link rel="preload" as="image" href="img/scene/shelf-desk.webp?v=2" media="(min-width: 721px)">
+<link rel="preload" as="image" href="img/scene/shelf-phone.webp?v=2" media="(max-width: 720px)">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=EB+Garamond:wght@400;500&display=swap" rel="stylesheet">
@@ -56,8 +56,12 @@
      Its edges are cropped on screens of another shape; the apps sit near the middle. */
   /* Reaches past every screen edge, so nothing shows behind floating browser bars */
   .stage { position: absolute; top: 0; left: 0; right: 0; height: calc(100vh + 160px + var(--below)); height: calc(100lvh + 160px + var(--below)); overflow: hidden; }
-  .scene { --w: 1536; --h: 1024; position: absolute; left: 50%; top: calc(160px + (100lvh + var(--below)) / 2); translate: -50% -50%; z-index: 1; container-type: inline-size;
-    width: max(100vw, calc((100lvh + var(--below)) * var(--w) / var(--h))); aspect-ratio: var(--w) / var(--h); }
+  /* --fx: the point of the picture (0 to 1 across) kept in the middle of the screen; the
+     clamp stops the picture's edge from ever coming inside the screen */
+  .scene { --w: 1536; --h: 1024; --fx: .5; --sw: max(100vw, calc((100lvh + var(--below)) * var(--w) / var(--h)));
+    position: absolute; left: clamp(calc(100vw - var(--sw)), calc(50vw - var(--sw) * var(--fx)), 0px); top: calc(160px + (100lvh + var(--below)) / 2); translate: 0 -50%; z-index: 1; container-type: inline-size;
+    width: var(--sw); aspect-ratio: var(--w) / var(--h); }
+  .scene.phone { --fx: .62; }   /* the phone painting's objects sit right of centre */
   .scene > img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; filter: brightness(var(--dim)) saturate(var(--sat)); }
   .scene::after { content: ""; position: absolute; inset: 0; pointer-events: none; opacity: var(--glow); mix-blend-mode: screen;
     background: radial-gradient(45% 50% at 82% 55%, rgba(255, 170, 70, .28), transparent 70%), radial-gradient(30% 30% at 18% 52%, rgba(255, 190, 90, .18), transparent 70%); }
@@ -118,29 +122,37 @@
   // (x, y, w, h). To add an app: ask ChatGPT
   // for the scene with the new object, then measure its box here (?debug shows the boxes).
   const SCENES = {
-    desk: { src: "img/scene/shelf-desk.webp?v=1", w: 1536, h: 1024, apps: {
-      festa: [27.7, 12.7, 17.6, 30.8], astro: [46.9, 12.2, 18.6, 31.4], job: [28.3, 52.2, 30.3, 23.1, 35.8], soon: [62.4, 50.3, 14.3, 25.4] } },
-    phone: { src: "img/scene/shelf-phone.webp?v=1", w: 1024, h: 1536, apps: {
-      festa: [37.6, 6.0, 25.7, 19.1], astro: [39.4, 29.9, 23.3, 15.4], job: [35.2, 50.7, 39.1, 14.8, 36], soon: [40.0, 69.0, 23.0, 17.9] } },
+    desk: { src: "img/scene/shelf-desk.webp?v=2", w: 1536, h: 1024, apps: {
+      festa: [27.3, 12.7, 18.1, 31.4], astro: [47.0, 12.3, 18.5, 32.0], journal: [65.0, 22.0, 20.4, 22.3],
+      job: [21.5, 52.3, 25.4, 23.6, 37], expenses: [48.5, 54.2, 15.7, 21.7], soon: [67.3, 49.2, 13.7, 26.7] } },
+    phone: { src: "img/scene/shelf-phone.webp?v=2", w: 1024, h: 1536, apps: {
+      festa: [36.4, 5.9, 21.3, 19.7], astro: [40.0, 29.5, 22.6, 16.2], journal: [61.0, 11.0, 29.5, 14.6],
+      job: [34.8, 50.5, 40.7, 15.3, 36], expenses: [34.1, 72.0, 24.3, 14.9], soon: [60.0, 69.4, 18.7, 17.5] } },
   };
   const APPS = [
     { id: "festa", href: "https://festa-demo.appdoivo.com" },
     { id: "astro", href: "https://astro.appdoivo.com" },
+    { id: "journal", href: "https://journal.appdoivo.com" },
     { id: "job", href: "https://job.appdoivo.com" },
+    { id: "expenses", href: "https://expenses.appdoivo.com" },
     { id: "soon", href: null },
   ];
   const T = {
     en: { tagline: "Small Apps for a Bigger Life", other: "PT", otherLabel: "Ver em português", toDark: "Dark Mode", toLight: "Light Mode", apps: "Apps",
-      title: "App do Ivo · Small Apps for a Bigger Life", alt: "A bookshelf in afternoon light with a jar holding a mossy cottage, a star globe, a typewriter and a glass dome with a sprout.",
+      title: "App do Ivo · Small Apps for a Bigger Life", alt: "A bookshelf in afternoon light with a jar holding a mossy cottage, a star globe, a stack of notebooks with an instant photo, a typewriter, a leather ledger with a coin purse and a glass dome with a sprout.",
       festa: ["Festa", "Celebrate the Days That Matter", "Festa, the birthday party app: try the demo"],
       astro: ["Astro", "The Sky at Any Moment", "Astro, the sky at any moment"],
       job: ["Job", "A CV for Every Job", "Job, a CV tailored to every job"],
+      journal: ["Journal", "A Quiet Place for Your Mind", "Journal, a private diary, notes and photo albums"],
+      expenses: ["Expenses", "Your Money, Month by Month", "Expenses, your money month by month"],
       soon: ["Soon", "More to Come", "More apps to come"] },
     pt: { tagline: "Pequenas Apps para uma Vida Maior", other: "EN", otherLabel: "View in English", toDark: "Modo Escuro", toLight: "Modo Claro", apps: "Apps",
-      title: "App do Ivo · Pequenas Apps para uma Vida Maior", alt: "Uma estante à luz da tarde com um frasco com uma casa entre o musgo, um globo de estrelas, uma máquina de escrever e uma redoma com um rebento.",
+      title: "App do Ivo · Pequenas Apps para uma Vida Maior", alt: "Uma estante à luz da tarde com um frasco com uma casa entre o musgo, um globo de estrelas, uma pilha de cadernos com uma fotografia instantânea, uma máquina de escrever, um livro de contas com um porta-moedas e uma redoma com um rebento.",
       festa: ["Festa", "Celebrar os Dias Que Importam", "Festa, a app de festa de anos: experimentar a demo"],
       astro: ["Astro", "O Céu a Qualquer Momento", "Astro, o céu a qualquer momento"],
       job: ["Job", "Um CV para Cada Vaga", "Job, um CV à medida de cada vaga"],
+      journal: ["Diário", "Um Lugar Calmo para a Mente", "Diário, um diário privado, notas e álbuns de fotos"],
+      expenses: ["Despesas", "O Seu Dinheiro, Mês a Mês", "Despesas, o seu dinheiro mês a mês"],
       soon: ["Em Breve", "Mais a Caminho", "Mais apps a caminho"] },
   };
   let saved = null; try { saved = localStorage.getItem("lang"); } catch (_) {}
