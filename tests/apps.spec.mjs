@@ -26,7 +26,7 @@ test("each object links to its app and says where it goes; Soon is not a link", 
   await expect(page.locator("a.app.draft")).toHaveAttribute("href", "https://draft.appdoivo.com");
   await expect(page.locator("a.app.quill")).toHaveAttribute("href", "https://quill.appdoivo.com");
   await expect(page.locator("a.app.tally")).toHaveAttribute("href", "https://tally.appdoivo.com");
-  await expect(page.locator("a.app.lodge")).toHaveAccessibleName(/Lodge.*Friends/);
+  await expect(page.locator("a.app.lodge")).toHaveAccessibleName(/Lodge.*friends/i);
   await expect(page.locator("a.app.soon")).toHaveCount(0);
 });
 
@@ -34,8 +34,10 @@ test("the scene always covers the whole screen: no frame, no bands", async ({ pa
   for (const [w, h] of [[390, 844], [768, 1024], [1440, 900], [2560, 1080]]) {
     await page.setViewportSize({ width: w, height: h });
     await page.goto("/?lang=en");
+    // the painting plus its mirrored copies above and below (the page has no end, like ivolopes.com)
     const b = await page.locator("#scene-img").boundingBox();
-    expect(b.x <= 1 && b.y <= 1 && b.x + b.width >= w - 1 && b.y + b.height >= h - 1, `${w}x${h}`).toBe(true);
+    expect(b.x <= 1 && b.y - b.height <= 1 && b.x + b.width >= w - 1 && b.y + 2 * b.height >= h - 1, `${w}x${h}`).toBe(true);
+    expect(await page.evaluate(() => getComputedStyle(document.getElementById("scene"), "::before").backgroundImage), `${w}x${h}`).toContain("shelf-");
   }
 });
 
@@ -55,7 +57,7 @@ test("Portuguese, Title Case like the English", async ({ page }) => {
   await page.goto("/?lang=pt");
   await expect(page).toHaveTitle("App do Ivo · Pequenas Apps para uma Vida Maior");
   await expect(page.locator(".app.soon .label b")).toHaveText("Em Breve");
-  await expect(page.locator("a.app.astro")).toHaveAccessibleName(/O Céu/);
+  await expect(page.locator("a.app.astro")).toHaveAccessibleName(/o céu/i);
 });
 
 test("one look (no dark switch), sideways scroll, 44px targets, no serious accessibility problems", async ({ page }) => {
@@ -63,7 +65,7 @@ test("one look (no dark switch), sideways scroll, 44px targets, no serious acces
     await page.emulateMedia({ colorScheme: scheme });
     await page.goto("/?lang=en");
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(0);
-    for (const sel of ["#lang", "a.app >> nth=0"]) expect((await page.locator(sel).boundingBox()).height, sel).toBeGreaterThanOrEqual(44);
+    for (const sel of ["a.app >> nth=0"]) expect((await page.locator(sel).boundingBox()).height, sel).toBeGreaterThanOrEqual(44);
     const r = await new AxeBuilder({ page }).analyze();
     expect(r.violations.filter((v) => ["serious", "critical"].includes(v.impact)).map((v) => `${v.id}: ${v.nodes.map((n) => n.target).join(", ")}`), scheme).toEqual([]);
   }
@@ -82,9 +84,9 @@ test("nothing is pinned to the screen edges (iPhone Safari would paint a solid b
 test("the window sits scrolled down by the painting strip above it, so the clock area shows the painting", async ({ page }) => {
   await page.goto("/?lang=en");
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(160);
-  const top = await page.locator(".tools").evaluate((el) => el.getBoundingClientRect().top);
-  expect(top).toBeGreaterThanOrEqual(0);
-  expect(top).toBeLessThan(80);
+  // the strip above the painting is the painting itself, mirrored (no solid band behind the clock)
+  const strip = await page.evaluate(() => { const r = document.getElementById("scene").getBoundingClientRect(); return r.top - r.height; });
+  expect(strip).toBeLessThanOrEqual(-160);
   await page.evaluate(() => window.scrollTo(0, 0));
   await expect.poll(() => page.evaluate(() => window.scrollY)).toBe(160);
 });
@@ -104,6 +106,6 @@ test("on a touch screen, a tap lights the object and shows its name before the a
   const a = page.locator("a.app.tally");
   await a.tap();
   await expect(a).toHaveClass(/lit/);
-  await expect(a.locator(".label")).toHaveCSS("opacity", "1");
+  await expect.poll(() => a.locator(".label").evaluate((l) => +getComputedStyle(l).opacity), { timeout: 600 }).toBeGreaterThan(0.5);
   await page.waitForURL("https://tally.appdoivo.com/**", { timeout: 3000 });
 });

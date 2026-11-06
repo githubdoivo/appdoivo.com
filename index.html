@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <!-- csp-meta: only this site's own scripts run (refresh with ~/bin/csp-meta after editing an inline script) -->
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2IF1OqlYQEsPupU5Mrj3Qv8UhEPG8o6AQ3j7c6CNrDo=' 'sha256-TZrTCnzgsS0EQWlhe5zs40lw0mhyS3WXe1KwXo4Y++c='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-2IF1OqlYQEsPupU5Mrj3Qv8UhEPG8o6AQ3j7c6CNrDo=' 'sha256-Glj46MGZc7gLj0S0RkVZUlELtdRKz67gTt1ONSQtmww='; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: blob: https:; media-src 'self' data: blob:; connect-src 'self'; frame-src 'none'; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
 <title>App do Ivo · Small Apps for a Bigger Life</title>
 <meta name="description" content="Small apps by Ivo Lopes, each one an object on the shelf: Lodge, Astro, Quill, Draft, Tally, and more to come.">
 <meta property="og:title" content="App do Ivo · Small Apps for a Bigger Life">
@@ -60,19 +60,17 @@
   /* Phone (2026-11-05, no rug): the whole shelf stays on screen. The picture is shown a
      little smaller than "cover" (80% of its width fits the screen), its top at the screen's
      top; below, it fades into the same dark wall colour, which fills the rest. */
-  .stage:has(.scene.phone) { background: #5d2b07; }
   .scene.phone { --sw: calc(100vw * 1.25); left: calc(50vw - var(--sw) * .51); top: 160px; }
-  .scene.phone > img { -webkit-mask-image: linear-gradient(to bottom, #000 88%, transparent); mask-image: linear-gradient(to bottom, #000 88%, transparent); }
+  /* No end to the page (like ivolopes.com): above and below the painting, a mirrored copy of
+     it continues the wall, so no solid band ever shows behind the clock or the browser bars. */
+  .scene::before, .scene::after { content: ""; position: absolute; left: 0; width: 100%; height: 100%; background: var(--src) center / 100% 100% no-repeat; transform: scaleY(-1); pointer-events: none; }
+  .scene::before { bottom: 100%; } .scene::after { top: 100%; }
+  /* phone: below the shelves only the plain wall at the painting's foot continues (no upside-down shelves behind the browser bar) */
+  .scene.phone::after { background-size: 100% 900%; background-position: bottom; }
   @media (min-aspect-ratio: 3/5) { .scene.phone { --sw: max(100vw, calc((100lvh + var(--below)) * var(--w) / var(--h))); left: clamp(calc(100vw - var(--sw)), calc(50vw - var(--sw) * .51), 0px); } }
   .scene > img { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 
   .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); white-space: nowrap; }
-
-  .tools { position: absolute; z-index: 3; top: calc(160px + max(14px, env(safe-area-inset-top))); right: max(14px, env(safe-area-inset-right)); display: flex; gap: 8px; }
-  .btn { width: 44px; height: 44px; display: grid; place-items: center; padding: 0; border: 1px solid rgba(255, 236, 200, .55); border-radius: 10px;
-    background: rgba(40, 24, 12, .35); color: #f6e8cc; font: 500 15px "EB Garamond", Georgia, serif; letter-spacing: .04em; cursor: pointer; backdrop-filter: blur(3px); }
-  .btn:hover { background: rgba(40, 24, 12, .55); }
-  .btn svg { width: 20px; height: 20px; fill: none; stroke: currentColor; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
 
   /* Each app: a link over its object and stand, and its words on the label */
   .app { position: absolute; z-index: 2; display: block; border-radius: 12px; text-decoration: none; color: var(--ink); }
@@ -117,9 +115,6 @@
     <nav id="apps" aria-label="Apps"></nav>
   </div>
 </div>
-<div class="tools">
-  <button class="btn" id="lang" type="button">PT</button>
-</div>
 <script>
   // Where each app sits in each picture, in % of the picture: the object and stand
   // (x, y, w, h). To add an app: ask ChatGPT
@@ -158,8 +153,8 @@
       tally: ["Tally", "O Seu Dinheiro, Mês a Mês", "Tally, o seu dinheiro mês a mês"],
       soon: ["Em Breve", "Mais a Caminho", "Mais apps a caminho"] },
   };
-  let saved = null; try { saved = localStorage.getItem("lang"); } catch (_) {}
-  let lang = new URLSearchParams(location.search).get("lang") || saved || ((navigator.language || "").toLowerCase().startsWith("pt") ? "pt" : "en");
+  // No language switch (app names don't translate): the browser's language decides the words
+  let lang = new URLSearchParams(location.search).get("lang") || ((navigator.language || "").toLowerCase().startsWith("pt") ? "pt" : "en");
   if (!T[lang]) lang = "en";
   if (new URLSearchParams(location.search).has("debug")) document.body.classList.add("debug");
   const $ = (id) => document.getElementById(id);
@@ -171,7 +166,7 @@
     document.documentElement.lang = lang; document.title = t.title;
     document.querySelectorAll("[data-t]").forEach((el) => (el.textContent = t[el.dataset.t]));
     const scene = $("scene"); scene.className = `scene ${kind}`; scene.style.setProperty("--w", s.w); scene.style.setProperty("--h", s.h);
-    const img = $("scene-img"); if (!img.src.endsWith(s.src)) { img.src = s.src; img.width = s.w; img.height = s.h; }
+    const img = $("scene-img"); if (!img.src.endsWith(s.src)) { img.src = s.src; img.width = s.w; img.height = s.h; scene.style.setProperty("--src", `url("${s.src}")`); }
     img.alt = t.alt;
     $("apps").setAttribute("aria-label", t.apps);
     $("apps").innerHTML = APPS.map((a) => {
@@ -180,12 +175,10 @@
       const style = `left:${x}%;top:${y}%;width:${w}%;height:${h}%;--cx:${cx}%`;
       // A link is named by the words on its label; "Soon" is a picture with a name, not a link
       return a.href
-        ? `<a draggable="false" class="app ${a.id}" href="${a.href}" style="${style}"><span class="label"><b>${esc(t[a.id][0])}</b> <span>${esc(t[a.id][1])}</span></span></a>`
-        : `<div class="app ${a.id}" role="img" aria-label="${esc(t[a.id][2])}" style="${style}"><span class="label" aria-hidden="true"><b>${esc(t[a.id][0])}</b><span>${esc(t[a.id][1])}</span></span></div>`;
+        ? `<a draggable="false" class="app ${a.id}" href="${a.href}" aria-label="${esc(t[a.id][2])}" style="${style}"><span class="label" aria-hidden="true"><b>${esc(t[a.id][0])}</b></span></a>`
+        : `<div class="app ${a.id}" role="img" aria-label="${esc(t[a.id][2])}" style="${style}"><span class="label" aria-hidden="true"><b>${esc(t[a.id][0])}</b></span></div>`;
     }).join("");
-    const b = $("lang"); b.textContent = t.other; b.setAttribute("aria-label", `${t.other}: ${t.otherLabel}`);
   }
-  $("lang").addEventListener("click", () => { lang = lang === "pt" ? "en" : "pt"; try { localStorage.setItem("lang", lang); } catch (_) {} render(); });
   phone.addEventListener("change", render);
   // On touch screens a tap first lights the object and shows its name for a moment, then
   // opens the app (a tap has no hover, so the light was never seen before leaving).
