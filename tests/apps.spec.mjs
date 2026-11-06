@@ -26,7 +26,7 @@ test("each object links to its app and says where it goes; Soon is not a link", 
   await expect(page.locator("a.app.draft")).toHaveAttribute("href", "https://draft.appdoivo.com");
   await expect(page.locator("a.app.quill")).toHaveAttribute("href", "https://quill.appdoivo.com");
   await expect(page.locator("a.app.tally")).toHaveAttribute("href", "https://tally.appdoivo.com");
-  await expect(page.locator("a.app.lodge")).toHaveAccessibleName(/Lodge.*friends/i);
+  await expect(page.locator("a.app.lodge")).toHaveAccessibleName(/lodgedoivo.*friends/i);
   await expect(page.locator("a.app.soon")).toHaveCount(0);
 });
 
