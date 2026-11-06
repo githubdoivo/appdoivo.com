@@ -13,7 +13,7 @@ A wide scene for computers, a tall one for phones (`img/scene/`, from ChatGPT; o
 | Little lit house with a brass key | Festa, the party app (any year's theme) | demo: https://festa-demo.appdoivo.com |
 | Brass astrolabe | Astro, the sky at any moment | https://astro.appdoivo.com |
 | Quill in an inkwell, open notebook | Quill, a quiet place for your mind | https://quill.appdoivo.com |
-| Typewriter | Job, a CV tailored to every job | https://job.appdoivo.com |
+| Typewriter | Type, a CV tailored to every job | https://type.appdoivo.com |
 | Leather ledger with coins | Ledger, your money month by month | https://ledger.appdoivo.com |
 | Glass dome with a sprout | Soon, more to come | (not a link) |
 

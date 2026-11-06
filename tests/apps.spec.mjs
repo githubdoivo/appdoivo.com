@@ -23,7 +23,7 @@ test("each object links to its app and says where it goes; Soon is not a link", 
   await page.goto("/?lang=en");
   await expect(page.locator("a.app.festa")).toHaveAttribute("href", "https://festa-demo.appdoivo.com");
   await expect(page.locator("a.app.astro")).toHaveAttribute("href", "https://astro.appdoivo.com");
-  await expect(page.locator("a.app.job")).toHaveAttribute("href", "https://job.appdoivo.com");
+  await expect(page.locator("a.app.job")).toHaveAttribute("href", "https://type.appdoivo.com");
   await expect(page.locator("a.app.quill")).toHaveAttribute("href", "https://quill.appdoivo.com");
   await expect(page.locator("a.app.ledger")).toHaveAttribute("href", "https://ledger.appdoivo.com");
   await expect(page.locator("a.app.festa")).toHaveAccessibleName(/Festa.*Celebrate/);
