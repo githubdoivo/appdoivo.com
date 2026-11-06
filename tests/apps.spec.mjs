@@ -21,12 +21,12 @@ test("the scene renders every app, with no errors or missing files", async ({ pa
 
 test("each object links to its app and says where it goes; Soon is not a link", async ({ page }) => {
   await page.goto("/?lang=en");
-  await expect(page.locator("a.app.festa")).toHaveAttribute("href", "https://festa-demo.appdoivo.com");
+  await expect(page.locator("a.app.lodge")).toHaveAttribute("href", "https://lodge.appdoivo.com");
   await expect(page.locator("a.app.astro")).toHaveAttribute("href", "https://astro.appdoivo.com");
-  await expect(page.locator("a.app.job")).toHaveAttribute("href", "https://type.appdoivo.com");
+  await expect(page.locator("a.app.draft")).toHaveAttribute("href", "https://draft.appdoivo.com");
   await expect(page.locator("a.app.quill")).toHaveAttribute("href", "https://quill.appdoivo.com");
-  await expect(page.locator("a.app.ledger")).toHaveAttribute("href", "https://ledger.appdoivo.com");
-  await expect(page.locator("a.app.festa")).toHaveAccessibleName(/Festa.*Celebrate/);
+  await expect(page.locator("a.app.tally")).toHaveAttribute("href", "https://tally.appdoivo.com");
+  await expect(page.locator("a.app.lodge")).toHaveAccessibleName(/Lodge.*Friends/);
   await expect(page.locator("a.app.soon")).toHaveCount(0);
 });
 
@@ -99,11 +99,11 @@ test("holding an object shows no lifted copy: links not draggable, no callout", 
 
 test("on a touch screen, a tap lights the object and shows its name before the app opens", async ({ page, isMobile }) => {
   test.skip(!isMobile, "touch only");
-  await page.route("https://ledger.appdoivo.com/**", (r) => r.fulfill({ body: "ledger" }));
+  await page.route("https://tally.appdoivo.com/**", (r) => r.fulfill({ body: "tally" }));
   await page.goto("/?lang=en");
-  const a = page.locator("a.app.ledger");
+  const a = page.locator("a.app.tally");
   await a.tap();
   await expect(a).toHaveClass(/lit/);
   await expect(a.locator(".label")).toHaveCSS("opacity", "1");
-  await page.waitForURL("https://ledger.appdoivo.com/**", { timeout: 3000 });
+  await page.waitForURL("https://tally.appdoivo.com/**", { timeout: 3000 });
 });

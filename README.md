@@ -10,11 +10,11 @@ A wide scene for computers, a tall one for phones (`img/scene/`, from ChatGPT; o
 
 | Object | App | Address |
 | --- | --- | --- |
-| Little lit house with a brass key | Festa, the party app (any year's theme) | demo: https://festa-demo.appdoivo.com |
+| Little lit house with a brass key | Lodge, the birthday weekend with friends | https://lodge.appdoivo.com |
 | Brass astrolabe | Astro, the sky at any moment | https://astro.appdoivo.com |
 | Quill in an inkwell, open notebook | Quill, a quiet place for your mind | https://quill.appdoivo.com |
-| Typewriter | Type, a CV tailored to every job | https://type.appdoivo.com |
-| Leather ledger with coins | Ledger, your money month by month | https://ledger.appdoivo.com |
+| Typewriter | Draft, a CV tailored to every job | https://draft.appdoivo.com |
+| Leather ledger with coins | Tally, your money month by month | https://tally.appdoivo.com |
 | Glass dome with a sprout | Soon, more to come | (not a link) |
 
 ## Adding an app

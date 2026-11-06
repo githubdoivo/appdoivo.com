@@ -1,7 +1,7 @@
 # appdoivo.com hub: ChatGPT design prompts (two new objects on the shelf)
 
 Goal: the hub is one painted bookshelf in warm afternoon light; each app is an object on
-the shelf (jar with a mossy cottage = Festa, star globe = Astro, typewriter and tape measure =
+the shelf (jar with a mossy cottage = Lodge, star globe = Astro, typewriter and tape measure =
 Job, glass dome with a sprout = more to come). Two apps join: **Journal** (a notebook) and
 **Expenses** (a brass balance scale). The painting must stay the same painting: same light,
 same objects, same places. Night mode is made by the page (dimmed + candle glow), so no
